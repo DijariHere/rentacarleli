@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
+<link rel="manifest" href="/admin.webmanifest">
+<meta name="theme-color" content="#15181C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Leli Admin">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Paneli · Rent A Car Leli</title>
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGNUI3MDAiLz48cGF0aCBkPSJNMjIgMTBWNDRINTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE1MTgxQyIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMiAxMlY0NEg1MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjQgNCIvPjwvc3ZnPgo=" type="image/svg+xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
@@ -771,7 +778,7 @@ api.onAuth((u) => {
   $("#panel").hidden = !u;
   $("#logout").hidden = !u;
   if (u) {
-    unsubs.push(api.watchBookings((b) => { bookings = b || []; render(); }));
+    unsubs.push(api.watchBookings((b) => { bookings = b || []; njoftoTeReja(); render(); }));
     unsubs.push(api.watchBlocks((b) => { blocks = b || []; render(); }));
   }
 });
@@ -779,6 +786,7 @@ $("#login-f").addEventListener("submit", async (e) => {
   e.preventDefault();
   const err = $("#l-err");
   err.hidden = true;
+  try { if ("Notification" in window && Notification.permission === "default") Notification.requestPermission(); } catch {}
   try {
     await api.login($("#l-email").value.trim(), $("#l-pw").value);
   } catch (x) {
@@ -787,6 +795,32 @@ $("#login-f").addEventListener("submit", async (e) => {
   }
 });
 $("#logout").addEventListener("click", () => api.logout());
+
+// ---------- Njoftim kur vjen rezervim i ri (kur paneli është i hapur) ----------
+let paraPare = null;
+function njoftoTeReja() {
+  const pending = bookings.filter((b) => b.status === "pending").map((b) => b.id);
+  if (paraPare === null) { paraPare = new Set(pending); return; }
+  const reja = bookings.filter((b) => b.status === "pending" && !paraPare.has(b.id));
+  pending.forEach((id) => paraPare.add(id));
+  if (!reja.length) return;
+  const b = reja[0];
+  toast(`Rezervim i ri: ${b.emri} · ${b.carName}`);
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch {}
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.25].forEach((t) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.2, ctx.currentTime + t); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.2);
+      o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + 0.2);
+    });
+  } catch {}
+  try {
+    if ("Notification" in window && Notification.permission === "granted")
+      new Notification("Rezervim i ri – Rent A Car Leli", { body: `${b.emri} · ${b.carName} · ${formatoData(b.from)} → ${formatoData(b.to)} · ${b.totali}€`, icon: "/admin-icon-192.png" });
+  } catch {}
+}
 
 // ---------- Mesazhet ----------
 function mesazhi(b, lloji) {
