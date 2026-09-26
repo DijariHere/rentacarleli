@@ -277,6 +277,11 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
 .lnk-btn { background: none; border: 0; padding: 0; color: #2d5bd1; font: 600 13px var(--body); cursor: pointer; justify-self: start; text-decoration: underline; }
 .okmsg { color: var(--ok); background: var(--ok-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 500; }
 
+/* ---------- Butoni i gjuhës ---------- */
+.lang-btn { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: #fff; border: 1.5px solid #3a4048; border-radius: 8px; padding: 8px 10px; font: 700 13px/1 var(--body); letter-spacing: .04em; cursor: pointer; }
+.lang-btn:hover { border-color: var(--yellow); color: var(--yellow); }
+@media (max-width: 480px) { .nav-rez { display: none; } }
+
 </style>
 <style>
   .me-wrap { max-width: 860px; margin: 0 auto; padding-block: 40px 72px; display: grid; gap: 24px; }
@@ -307,6 +312,7 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
   .rz-contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; background: #f5f6f2; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 500; }
   .rz-acts { display: flex; gap: 8px; flex-wrap: wrap; }
   .empty { text-align: center; padding: 40px 20px; background: var(--card); border: 1px dashed var(--line); border-radius: 14px; display: grid; gap: 12px; justify-items: center; }
+  .me-sec { padding-block: 0; }
   .me-sec h2 { font-size: 24px; text-transform: uppercase; margin-bottom: 10px; color: var(--muted); }
 </style>
 </head>
@@ -502,6 +508,250 @@ function ilustrimi(makina) {
 </script>
 <script>
 // ============================================================
+//  SHQIP / ENGLISH — përkthimi i faqes për klientët
+//  Tekstet shqip janë çelësat; këtu shtohet përkthimi anglisht.
+// ============================================================
+const LANG = (() => {
+  try { return localStorage.getItem("leli_lang") === "en" ? "en" : "sq"; } catch { return "sq"; }
+})();
+
+const TR = {
+  // Menyja dhe hero
+  "Makinat": "Cars",
+  "Si funksionon": "How it works",
+  "Kontakti": "Contact",
+  "Rezervo": "Book",
+  "Hyr": "Sign in",
+  "Te Autolarje Leli": "At Auto Larje Leli car wash",
+  "Makina të pastra,": "Clean cars,",
+  "gati për rrugë.": "ready for the road.",
+  "Zgjidh makinën, cakto datat dhe dërgo rezervimin online. Ne ta konfirmojmë me mesazh dhe makina të pret e larë te Autolarje Leli.":
+    "Choose a car, pick your dates and send your booking online. We confirm by message and the car waits for you, freshly washed, at Auto Larje Leli.",
+  "Shiko makinat": "See the cars",
+  "Thirr 044 296 791": "Call 044 296 791",
+  "Çmimet": "Prices",
+  "Çmimi për ditë": "Price per day",
+  "1 ditë": "1 day",
+  "2 ditë": "2 days",
+  "€/ditë": "€/day",
+  "3 ditë e më shumë": "3 days or more",
+  "Çmimi vlen për të gjitha makinat.": "Same price for every car.",
+  // Makinat
+  "Flota jonë": "Our fleet",
+  "Zgjidh makinën": "Choose your car",
+  "Makinat që janë të zëna për ditët që zgjedh nuk mund të rezervohen. Rezervimi bëhet i sigurt pasi ta aprovojmë.":
+    "Cars already taken for your dates can't be booked. Your booking is confirmed once we approve it.",
+  "E lirë": "Available",
+  "E zënë sot": "Booked today",
+  "E zënë:": "Booked:",
+  "Nuk ka rezervime të aprovuara së shpejti.": "No upcoming bookings.",
+  "Sa ditë?": "How many days?",
+  "Më pak ditë": "Fewer days",
+  "Më shumë ditë": "More days",
+  "Numri i ditëve": "Number of days",
+  "E bardhë": "White",
+  "Argjendi": "Silver",
+  "E kuqe · çati e zezë": "Red · black roof",
+  "Ulëse": "Seats",
+  "Dyer": "Doors",
+  "Karburanti": "Fuel",
+  "Transmisioni": "Gearbox",
+  "Bagazhi": "Boot",
+  "Klima": "A/C",
+  "Po": "Yes",
+  "Naftë": "Diesel",
+  "Benzinë": "Petrol",
+  "Automatik": "Automatic",
+  "Manual": "Manual",
+  "Modeli më i ri në flotë. Komode për rrugë të gjata, e qetë në autostradë dhe me konsum të ulët. Zgjedhja e duhur për udhëtime familjare ose pune.":
+    "The newest car in our fleet. Comfortable on long drives, quiet on the motorway and easy on fuel. The right choice for family or business trips.",
+  "E vogël, e lehtë për t'u parkuar dhe shumë ekonomike. Perfekte për qytet dhe për rrugë të shkurtra brenda Kosovës.":
+    "Small, easy to park and very economical. Perfect for the city and short trips around Kosovo.",
+  "Crossover me pozicion të lartë ulje dhe pamje të mirë të rrugës. Hapësirë e bollshme për bagazhe dhe e sigurt edhe në rrugë malore.":
+    "A crossover with a high seating position and a clear view of the road. Plenty of luggage space and sure-footed on mountain roads.",
+  // Si funksionon
+  "Tre hapa": "Three steps",
+  "Hyr dhe rezervo": "Sign in and book",
+  "Hyr me Google ose me email, zgjidh makinën dhe datat. Çmimi llogaritet menjëherë.":
+    "Sign in with Google or email, choose the car and your dates. The price is calculated instantly.",
+  "Ne e konfirmojmë": "We confirm it",
+  "Të kthejmë mesazh sapo ta aprovojmë. Statusin e sheh kurdo te \"Rezervimet e mia\".":
+    "We message you as soon as we approve it. You can check the status any time under \"My bookings\".",
+  "Merr makinën": "Pick up the car",
+  "Eja te Autolarje Leli me letërnjoftim dhe patentë shoferi. Makina të pret e pastër.":
+    "Come to Auto Larje Leli with your ID and driving licence. The car will be waiting, clean.",
+  // Kontakti
+  "Na gjeni": "Find us",
+  "Telefono": "Call us",
+  "Numri kryesor": "Main number",
+  "Thirr": "Call",
+  "Nëse nuk përgjigjet i pari": "If the first number doesn't answer",
+  "Makinat merren dhe kthehen te lavazhi. Kur vjen, pyet për Rent A Car Leli.":
+    "Cars are picked up and returned at the car wash. When you arrive, ask for Rent A Car Leli.",
+  "Hap në Google Maps": "Open in Google Maps",
+  "Rent A Car Leli · Te Autolarje Leli": "Rent A Car Leli · At Auto Larje Leli",
+  "Rezervimet e mia": "My bookings",
+  "© Rent A Car Leli · Te Auto Larje Leli": "© Rent A Car Leli · At Auto Larje Leli",
+  // Formulari i rezervimit
+  "Mbyll": "Close",
+  "Data e marrjes": "Pick-up date",
+  "Data e kthimit": "Return date",
+  "Ora e marrjes": "Pick-up time",
+  "Emri dhe mbiemri": "Full name",
+  "Telefoni (WhatsApp/Viber)": "Phone (WhatsApp/Viber)",
+  "Shënim (opsional)": "Note (optional)",
+  "P.sh. do e marr në aeroport, kam nevojë për ulëse fëmije…": "E.g. pick-up at the airport, need a child seat…",
+  "Kam patentë shoferi të vlefshme dhe do të sjell letërnjoftimin.": "I have a valid driving licence and will bring my ID.",
+  "Dërgo rezervimin": "Send booking",
+  "Duke dërguar…": "Sending…",
+  "Pagesa bëhet kur merr makinën. Rezervimi konfirmohet pasi ta aprovojmë.": "You pay when you pick up the car. The booking is confirmed once we approve it.",
+  "Totali": "Total",
+  "Zgjidh datat për të parë çmimin.": "Pick dates to see the price.",
+  "Zgjidh datën e marrjes dhe të kthimit.": "Choose a pick-up and return date.",
+  "Data e marrjes nuk mund të jetë në të kaluarën.": "The pick-up date can't be in the past.",
+  "Shkruaj emrin dhe mbiemrin.": "Enter your full name.",
+  "Shkruaj një numër telefoni të saktë.": "Enter a valid phone number.",
+  "Konfirmo që ke patentë shoferi.": "Confirm that you have a driving licence.",
+  "Makina është e zënë për këto data.": "This car is booked for these dates.",
+  "Rezervimi nuk u dërgua. Kontrollo internetin dhe provo përsëri, ose na telefono në 044 296 791.":
+    "The booking wasn't sent. Check your connection and try again, or call us on 044 296 791.",
+  "Rezervimi u dërgua": "Booking sent",
+  "Statusin e sheh kurdo te \"Rezervimet e mia\", lart djathtas.": "You can check the status any time under \"My bookings\", top right.",
+  "Shiko rezervimet e mia": "See my bookings",
+  "Për pyetje: 044 296 791 · 049 636 556": "Questions: 044 296 791 · 049 636 556",
+  // Shiriti i statusit dhe statuset
+  "Rezervimi yt": "Your booking",
+  "Shiko detajet": "View details",
+  "Në pritje": "Pending",
+  "Aprovuar": "Approved",
+  "Refuzuar": "Declined",
+  "Anuluar": "Cancelled",
+  "Përfunduar": "Completed",
+  "Po pret aprovimin. Do të të njoftojmë me mesazh.": "Waiting for approval. We'll message you.",
+  "Makina është gati për ta marrë te Auto Larje Leli.": "The car is ready for pick-up at Auto Larje Leli.",
+  "Makina nuk ishte e lirë për këto data.": "The car wasn't available for these dates.",
+  "Ky rezervim është anuluar.": "This booking has been cancelled.",
+  "Faleminderit!": "Thank you!",
+  // Llogaria
+  "Hyr në llogari": "Sign in",
+  "Krijo llogari": "Create account",
+  "Për të rezervuar dhe për të parë statusin e rezervimeve": "To book and track the status of your bookings",
+  "Regjistrohu": "Sign up",
+  "Vazhdo me Google": "Continue with Google",
+  "ose me email": "or with email",
+  "Emaili": "Email",
+  "Fjalëkalimi": "Password",
+  "Harrove fjalëkalimin?": "Forgot your password?",
+  "Krijo llogarinë": "Create account",
+  "Rezervimet e tua ruhen në llogari dhe i sheh vetëm ti.": "Your bookings are saved to your account and only you can see them.",
+  "Emaili ose fjalëkalimi është gabim.": "Wrong email or password.",
+  "Ky email ka tashmë llogari. Kliko \"Hyr\" dhe hyr me të.": "This email already has an account. Click \"Sign in\" to use it.",
+  "Fjalëkalimi duhet të ketë së paku 6 karaktere.": "The password must be at least 6 characters.",
+  "Emaili nuk është i saktë.": "That email address isn't valid.",
+  "Shkruaj fjalëkalimin.": "Enter your password.",
+  "Shkruaj emailin.": "Enter your email.",
+  "Shumë tentime. Provo përsëri pas pak minutash.": "Too many attempts. Try again in a few minutes.",
+  "Kjo mënyrë hyrjeje nuk është aktivizuar ende. Na telefono në 044 296 791.": "This sign-in method isn't available yet. Call us on 044 296 791.",
+  "Hyrja me Google nuk lejohet nga ky domen ende.": "Google sign-in isn't allowed from this address yet.",
+  "Nuk ka internet. Kontrollo lidhjen dhe provo përsëri.": "No internet connection. Check it and try again.",
+  "Diçka nuk shkoi. Provo përsëri.": "Something went wrong. Please try again.",
+  "Shkruaj emailin lart, pastaj kliko përsëri \"Harrove fjalëkalimin?\".": "Enter your email above, then click \"Forgot your password?\" again.",
+  // Faqja Rezervimet e mia
+  "Llogaria": "Account",
+  "Duke u ngarkuar…": "Loading…",
+  "Hyr për të parë rezervimet": "Sign in to see your bookings",
+  "Rezervimet ruhen në llogarinë tënde. Hyr me Google ose me email për të parë statusin dhe historinë.":
+    "Bookings are saved to your account. Sign in with Google or email to see their status and history.",
+  "Dil nga llogaria": "Sign out",
+  "Nuk ke ende rezervime": "No bookings yet",
+  "Zgjidh një makinë dhe rezervoje për disa sekonda.": "Choose a car and book it in seconds.",
+  "Aktive": "Active",
+  "Historia": "History",
+  "Marrja": "Pick-up",
+  "Kthimi": "Return",
+  "Ditë": "Days",
+  "Dërguar": "Sent",
+  "Totali · paguhet kur merr makinën": "Total · paid at pick-up",
+  "Anulo rezervimin": "Cancel booking",
+  "Po, anuloje": "Yes, cancel it",
+  "Jo": "No",
+  "Për ndryshim ose anulim na kontakto:": "To change or cancel, contact us:",
+  "Rezervimi u pranua dhe po pret aprovimin. Do të të kthejmë mesazh sapo ta konfirmojmë.":
+    "Your booking was received and is waiting for approval. We'll message you as soon as it's confirmed.",
+  "Makina është gati për ta marrë te Auto Larje Leli në datën dhe orën e caktuar. Sill letërnjoftimin dhe patentën.":
+    "The car is ready for pick-up at Auto Larje Leli on the agreed date and time. Bring your ID and driving licence.",
+  "Na vjen keq, makina nuk ishte e lirë për këto data. Na telefono për një datë tjetër.":
+    "Sorry, the car wasn't available for these dates. Call us to find another date.",
+  "Makina u kthye. Faleminderit që zgjodhët Rent A Car Leli!": "Car returned. Thank you for choosing Rent A Car Leli!",
+  "Rezervimet e mia · Rent A Car Leli": "My bookings · Rent A Car Leli",
+  // Tekste me vlera
+  "Kursen {x}€": "Save {x}€",
+  "Rezervo për {d}": "Book for {d}",
+  "{car} është e zënë nga {a} deri {b}. Zgjidh data të tjera ose një makinë tjetër.": "{car} is booked from {a} to {b}. Choose other dates or another car.",
+  "Faleminderit, {emri}. Rezervimi për <b>{car}</b> ({a} → {b}, {tot}€) është <b>në pritje</b>. Do të të kthejmë mesazh në <b>{tel}</b> sapo ta aprovojmë.":
+    "Thank you, {emri}. Your booking for <b>{car}</b> ({a} → {b}, €{tot}) is <b>pending</b>. We'll message you on <b>{tel}</b> as soon as we approve it.",
+  "Të gjitha ({n})": "All ({n})",
+  "Të dërguam një email në {em} për të vendosur fjalëkalim të ri. Kontrollo edhe Spam.": "We sent an email to {em} to set a new password. Check your spam folder too.",
+};
+
+function t(s, vars) {
+  let r = LANG === "en" && TR[s] ? TR[s] : s;
+  if (vars) for (const k in vars) r = r.split(`{${k}}`).join(vars[k]);
+  return r;
+}
+function diteTxt(n) {
+  return LANG === "en" ? `${n} ${n === 1 ? "day" : "days"}` : `${n} ditë`;
+}
+
+// Përkthen automatikisht tekstet e faqes (edhe ato që shtohen më vonë)
+(() => {
+  document.documentElement.lang = LANG === "en" ? "en" : "sq";
+  document.title = t(document.title);
+
+  const ATTR = ["placeholder", "aria-label", "title"];
+  function perktheNyje(n) {
+    if (LANG !== "en") return;
+    if (n.nodeType === 3) {
+      const raw = n.nodeValue, s = raw.trim();
+      if (s && TR[s]) n.nodeValue = raw.replace(s, TR[s]);
+      return;
+    }
+    if (n.nodeType !== 1 || n.tagName === "SCRIPT" || n.tagName === "STYLE") return;
+    for (const a of ATTR) { const v = n.getAttribute && n.getAttribute(a); if (v && TR[v]) n.setAttribute(a, TR[v]); }
+    for (const c of n.childNodes) perktheNyje(c);
+  }
+  function nise() {
+    // Butoni SQ / EN në menynë lart
+    const nav = document.querySelector(".nav");
+    if (nav && !document.getElementById("lang-btn")) {
+      const b = document.createElement("button");
+      b.type = "button"; b.id = "lang-btn"; b.className = "lang-btn";
+      b.setAttribute("aria-label", LANG === "en" ? "Kalo në shqip" : "Switch to English");
+      b.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>${LANG === "en" ? "SQ" : "EN"}</span>`;
+      b.addEventListener("click", () => {
+        try { localStorage.setItem("leli_lang", LANG === "en" ? "sq" : "en"); } catch {}
+        location.reload();
+      });
+      const acct = document.getElementById("acct");
+      acct ? nav.insertBefore(b, acct) : nav.appendChild(b);
+    }
+    if (LANG !== "en") return;
+    perktheNyje(document.body);
+    new MutationObserver((ms) => {
+      for (const m of ms) {
+        if (m.type === "characterData") perktheNyje(m.target);
+        else if (m.type === "attributes") perktheNyje(m.target);
+        else m.addedNodes.forEach(perktheNyje);
+      }
+    }).observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ATTR });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", nise);
+  else nise();
+})();
+
+</script>
+<script>
+// ============================================================
 //  Shtresa e të dhënave: Firebase (kur është konfiguruar) ose DEMO (localStorage)
 // ============================================================
 
@@ -679,7 +929,7 @@ const firebase = {
     });
     return () => unsub();
   },
-  watchBookings(cb) {
+  watchBookings(cb, onErr) {
     let unsub = () => {};
     ngarkoFirebase().then(({ fs, db }) => {
       const q = fs.query(fs.collection(db, "bookings"), fs.orderBy("createdAt", "desc"), fs.limit(300));
@@ -687,7 +937,8 @@ const firebase = {
         cb(s.docs.map((d) => {
           const x = d.data();
           return { id: d.id, ...x, createdAt: x.createdAt?.toMillis?.() || Date.now() };
-        }))
+        })),
+        (e) => onErr && onErr(e)
       );
     });
     return () => unsub();
@@ -893,9 +1144,9 @@ const AuthUI = (() => {
   }
   function close() { if (dlg.open) dlg.close(); }
   function showErr(x) {
-    const t = typeof x === "string" ? x : gabimAuth(x);
-    if (!t) return;
-    ok.hidden = true; err.hidden = false; err.textContent = t;
+    const tx = t(typeof x === "string" ? x : gabimAuth(x));
+    if (!tx) return;
+    ok.hidden = true; err.hidden = false; err.textContent = tx;
   }
   function busy(b) {
     q("#auth-submit").disabled = b; q("#auth-google").disabled = b;
@@ -916,7 +1167,7 @@ const AuthUI = (() => {
     try {
       await api.klient.reset(em);
       err.hidden = true; ok.hidden = false;
-      ok.textContent = `Të dërguam një email në ${em} për të vendosur fjalëkalim të ri. Kontrollo edhe Spam.`;
+      ok.textContent = t("Të dërguam një email në {em} për të vendosur fjalëkalim të ri. Kontrollo edhe Spam.", { em });
     } catch (x) { showErr(x); }
   });
 
@@ -1028,7 +1279,7 @@ const AuthUI = (() => {
             <div><dt>Marrja</dt><dd class="num">${formatoData(b.from)} · ${esc(b.ora)}</dd></div>
             <div><dt>Kthimi</dt><dd class="num">${formatoData(b.to)}</dd></div>
             <div><dt>Ditë</dt><dd class="num">${b.dite} × ${b.cmimi}€</dd></div>
-            <div><dt>Dërguar</dt><dd class="num">${new Date(b.createdAt).toLocaleDateString("sq-AL")}</dd></div>
+            <div><dt>Dërguar</dt><dd class="num">${new Date(b.createdAt).toLocaleDateString(LANG === "en" ? "en-GB" : "sq-AL")}</dd></div>
           </dl>
           <div class="rz-foot"><div><small>Totali · paguhet kur merr makinën</small><br><b class="num">${b.totali}€</b></div>${anulo}</div>
           ${b.status === "approved" ? `
