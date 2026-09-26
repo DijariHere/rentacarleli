@@ -37,6 +37,7 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -70,7 +71,7 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; text-wra
 .nav a { text-decoration: none; color: #d8dbe0; }
 .nav a:hover { color: #fff; }
 .nav .tel { display: none; }
-@media (max-width: 760px) { .nav a:not(.btn) { display: none; } }
+@media (max-width: 760px) { .nav > a:not(.btn) { display: none; } .nav { gap: 10px; } }
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -237,6 +238,51 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
 .calc-total b { font: 800 40px/1 var(--display); }
 .btn-full { width: 100%; }
 .dlg-head .mini img { border-radius: 6px; aspect-ratio: 16/10; object-fit: cover; width: 100%; }
+
+/* ---------- Llogaria e klientit ---------- */
+.acct { display: inline-flex; align-items: center; }
+.acct-in { color: #fff; }
+.acct-chip { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; padding: 5px 12px 5px 5px; border: 1.5px solid #3a4048; border-radius: 999px; position: relative; }
+.acct-chip:hover { border-color: var(--yellow); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); color: #1b1400; display: grid; place-items: center; font: 800 17px/1 var(--display); flex: none; }
+.acct-txt { display: grid; line-height: 1.1; }
+.acct-txt small { font-size: 11px; color: #b9bec6; }
+.acct-txt b { font-size: 14px; max-width: 12ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.acct-badge { position: absolute; top: -6px; left: 24px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: #e5484d; color: #fff; font: 700 12px/20px var(--body); text-align: center; border: 2px solid var(--ink); }
+@media (max-width: 560px) { .acct-txt { display: none; } .acct-chip { padding: 4px; } }
+@media (max-width: 380px) { .nav-rez { display: none; } }
+
+.my-strip { padding-block: 0; background: var(--yellow-soft); border-bottom: 1px solid #efd98a; }
+.strip-in { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 14px 18px; padding-block: 12px; }
+.strip-img { width: 88px; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; background: #e6e2cf; }
+.strip-img img { width: 100%; height: 100%; object-fit: cover; }
+.strip-main { display: grid; line-height: 1.25; }
+.strip-main small, .strip-st small { font-size: 12px; color: #6b5a1d; }
+.strip-main b { font: 700 22px/1.1 var(--display); text-transform: uppercase; }
+.strip-main span { font-size: 14px; font-weight: 600; }
+.strip-st { display: grid; gap: 4px; justify-items: start; max-width: 26ch; }
+@media (max-width: 760px) {
+  .strip-in { grid-template-columns: auto 1fr; }
+  .strip-st { grid-column: 1 / -1; max-width: none; grid-auto-flow: column; align-items: center; justify-content: start; gap: 10px; }
+  .strip-in > .btn { grid-column: 1 / -1; }
+}
+
+.auth-dlg { width: min(430px, calc(100vw - 32px)); }
+.auth-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: var(--ink); color: #fff; }
+.auth-head h3 { font-size: 26px; text-transform: uppercase; }
+.auth-head small { color: #b9bec6; font-size: 13px; }
+.auth-body { padding: 18px; display: grid; gap: 14px; }
+.auth-body form { display: grid; gap: 12px; }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; background: #eef0ec; border-radius: 10px; padding: 4px; }
+.auth-tabs button { border: 0; background: transparent; padding: 10px; border-radius: 8px; font: 700 15px var(--body); cursor: pointer; color: var(--muted); }
+.auth-tabs button[aria-selected="true"] { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.gbtn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border: 1.5px solid #cfd3cc; border-radius: 8px; background: #fff; font: 600 15px var(--body); color: #1f1f1f; cursor: pointer; }
+.gbtn:hover { background: #f6f7f5; }
+.gbtn[disabled] { opacity: .5; cursor: wait; }
+.or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.lnk-btn { background: none; border: 0; padding: 0; color: #2d5bd1; font: 600 13px var(--body); cursor: pointer; justify-self: start; text-decoration: underline; }
+.okmsg { color: var(--ok); background: var(--ok-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 500; }
 
 </style>
 <style>
@@ -740,7 +786,110 @@ const firebase = {
   },
 };
 
+// ============================================================
+//  LLOGARITË E KLIENTËVE (hyrje me email/fjalëkalim ose Google)
+// ============================================================
+function gabimAuth(x) {
+  const c = (x && x.code) || "";
+  if (c.includes("popup-closed") || c.includes("cancelled-popup")) return "";
+  if (c.includes("invalid-credential") || c.includes("wrong-password") || c.includes("user-not-found")) return "Emaili ose fjalëkalimi është gabim.";
+  if (c.includes("email-already-in-use")) return "Ky email ka tashmë llogari. Kliko \"Hyr\" dhe hyr me të.";
+  if (c.includes("weak-password")) return "Fjalëkalimi duhet të ketë së paku 6 karaktere.";
+  if (c.includes("invalid-email")) return "Emaili nuk është i saktë.";
+  if (c.includes("missing-password")) return "Shkruaj fjalëkalimin.";
+  if (c.includes("too-many-requests")) return "Shumë tentime. Provo përsëri pas pak minutash.";
+  if (c.includes("operation-not-allowed") || c.includes("admin-restricted")) return "Kjo mënyrë hyrjeje nuk është aktivizuar ende. Na telefono në 044 296 791.";
+  if (c.includes("unauthorized-domain")) return "Hyrja me Google nuk lejohet nga ky domen ende.";
+  if (c.includes("network-request-failed")) return "Nuk ka internet. Kontrollo lidhjen dhe provo përsëri.";
+  return (x && x.message) || "Diçka nuk shkoi. Provo përsëri.";
+}
+
+const LS_U = "leli_demo_users";
+const LS_CU = "leli_demo_current";
+const klientDemo = {
+  _cbs: new Set(),
+  _cur() { try { return JSON.parse(localStorage.getItem(LS_CU) || "null"); } catch { return null; } },
+  _set(u) { try { u ? localStorage.setItem(LS_CU, JSON.stringify(u)) : localStorage.removeItem(LS_CU); } catch {} this._cbs.forEach((f) => f(u)); },
+  onUser(cb) { this._cbs.add(cb); setTimeout(() => cb(this._cur()), 0); return () => this._cbs.delete(cb); },
+  async signUp(name, email, pw) {
+    const us = lexo(LS_U);
+    if (!/^\S+@\S+\.\S+$/.test(email)) throw { code: "invalid-email" };
+    if (pw.length < 6) throw { code: "weak-password" };
+    if (us.some((u) => u.email === email)) throw { code: "email-already-in-use" };
+    const u = { uid: "u_" + idRastesishme(), email, displayName: name };
+    us.push({ ...u, pw }); try { localStorage.setItem(LS_U, JSON.stringify(us)); } catch {}
+    this._set(u);
+  },
+  async signIn(email, pw) {
+    const u = lexo(LS_U).find((x) => x.email === email && x.pw === pw);
+    if (!u) throw { code: "invalid-credential" };
+    this._set({ uid: u.uid, email: u.email, displayName: u.displayName });
+  },
+  async google() { this._set({ uid: "u_google_demo", email: "demo@gmail.com", displayName: "Klient Demo" }); },
+  async reset() {},
+  async logout() { this._set(null); },
+  watchMine(uid, cb) { return degjo(() => cb(lexo(LS_B).filter((b) => b.uid === uid).sort((a, b) => b.createdAt - a.createdAt))); },
+  async cancel(b) { shkruaj(LS_B, lexo(LS_B).map((x) => (x.id === b.id ? { ...x, status: "cancelled", updatedAt: Date.now() } : x))); },
+};
+
+const klientFirebase = {
+  onUser(cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ au, auth }) => {
+      au.getRedirectResult(auth).catch(() => {});
+      unsub = au.onAuthStateChanged(auth, (u) => cb(u ? { uid: u.uid, email: u.email, displayName: u.displayName, photoURL: u.photoURL } : null));
+    });
+    return () => unsub();
+  },
+  async signUp(name, email, pw) {
+    const { au, auth } = await ngarkoFirebase();
+    const r = await au.createUserWithEmailAndPassword(auth, email, pw);
+    await au.updateProfile(r.user, { displayName: name });
+    await r.user.reload();
+    klientFirebase._refresh && klientFirebase._refresh();
+  },
+  async signIn(email, pw) {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signInWithEmailAndPassword(auth, email, pw);
+  },
+  async google() {
+    const { au, auth } = await ngarkoFirebase();
+    const p = new au.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
+    try { await au.signInWithPopup(auth, p); }
+    catch (x) {
+      const c = (x && x.code) || "";
+      if (c.includes("popup-blocked") || c.includes("operation-not-supported")) return au.signInWithRedirect(auth, p);
+      throw x;
+    }
+  },
+  async reset(email) {
+    const { au, auth } = await ngarkoFirebase();
+    await au.sendPasswordResetEmail(auth, email);
+  },
+  async logout() {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signOut(auth);
+  },
+  watchMine(uid, cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      const q = fs.query(fs.collection(db, "bookings"), fs.where("uid", "==", uid));
+      unsub = fs.onSnapshot(q, (s) => cb(s.docs.map((d) => {
+        const x = d.data();
+        return { id: d.id, ...x, createdAt: x.createdAt?.toMillis?.() || Date.now() };
+      }).sort((a, b) => b.createdAt - a.createdAt)), () => cb([]));
+    });
+    return () => unsub();
+  },
+  async cancel(b) {
+    const { fs, db } = await ngarkoFirebase();
+    await fs.updateDoc(fs.doc(db, "bookings", b.id), { status: "cancelled", updatedAt: fs.serverTimestamp() });
+  },
+};
+
 const api = DEMO ? demo : firebase;
+api.klient = DEMO ? klientDemo : klientFirebase;
 
 </script>
 <script>
@@ -774,6 +923,12 @@ function toast(t) {
 api.onAuth((u) => {
   unsubs.forEach((f) => f());
   unsubs = [];
+  if (u && !DEMO && (u.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+    $("#login").hidden = false; $("#panel").hidden = true; $("#logout").hidden = false;
+    const er = $("#l-err"); er.hidden = false;
+    er.textContent = `Je i kyçur si ${u.email || "klient"}. Kjo llogari nuk ka qasje në panel. Kliko "Dil" dhe hyr me llogarinë e adminit.`;
+    return;
+  }
   $("#login").hidden = !!u;
   $("#panel").hidden = !u;
   $("#logout").hidden = !u;
@@ -942,6 +1097,7 @@ function kartela(b) {
       <div class="meta">
         <span>Klienti <b>${esc(b.emri)}</b></span>
         <span>Tel <b><a href="tel:+${nr}">${esc(b.tel)}</a></b></span>
+        ${b.email ? `<span>Email <b>${esc(b.email)}</b></span>` : ""}
         <span>Marrja <b class="num">${formatoData(b.from)} · ${esc(b.ora)}</b></span>
         <span>Kthimi <b class="num">${formatoData(b.to)}</b></span>
         <span>Dërguar <b>${kohaPara(b.createdAt)}</b></span>

@@ -32,6 +32,7 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -65,7 +66,7 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; text-wra
 .nav a { text-decoration: none; color: #d8dbe0; }
 .nav a:hover { color: #fff; }
 .nav .tel { display: none; }
-@media (max-width: 760px) { .nav a:not(.btn) { display: none; } }
+@media (max-width: 760px) { .nav > a:not(.btn) { display: none; } .nav { gap: 10px; } }
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -233,6 +234,51 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
 .btn-full { width: 100%; }
 .dlg-head .mini img { border-radius: 6px; aspect-ratio: 16/10; object-fit: cover; width: 100%; }
 
+/* ---------- Llogaria e klientit ---------- */
+.acct { display: inline-flex; align-items: center; }
+.acct-in { color: #fff; }
+.acct-chip { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; padding: 5px 12px 5px 5px; border: 1.5px solid #3a4048; border-radius: 999px; position: relative; }
+.acct-chip:hover { border-color: var(--yellow); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); color: #1b1400; display: grid; place-items: center; font: 800 17px/1 var(--display); flex: none; }
+.acct-txt { display: grid; line-height: 1.1; }
+.acct-txt small { font-size: 11px; color: #b9bec6; }
+.acct-txt b { font-size: 14px; max-width: 12ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.acct-badge { position: absolute; top: -6px; left: 24px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: #e5484d; color: #fff; font: 700 12px/20px var(--body); text-align: center; border: 2px solid var(--ink); }
+@media (max-width: 560px) { .acct-txt { display: none; } .acct-chip { padding: 4px; } }
+@media (max-width: 380px) { .nav-rez { display: none; } }
+
+.my-strip { padding-block: 0; background: var(--yellow-soft); border-bottom: 1px solid #efd98a; }
+.strip-in { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 14px 18px; padding-block: 12px; }
+.strip-img { width: 88px; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; background: #e6e2cf; }
+.strip-img img { width: 100%; height: 100%; object-fit: cover; }
+.strip-main { display: grid; line-height: 1.25; }
+.strip-main small, .strip-st small { font-size: 12px; color: #6b5a1d; }
+.strip-main b { font: 700 22px/1.1 var(--display); text-transform: uppercase; }
+.strip-main span { font-size: 14px; font-weight: 600; }
+.strip-st { display: grid; gap: 4px; justify-items: start; max-width: 26ch; }
+@media (max-width: 760px) {
+  .strip-in { grid-template-columns: auto 1fr; }
+  .strip-st { grid-column: 1 / -1; max-width: none; grid-auto-flow: column; align-items: center; justify-content: start; gap: 10px; }
+  .strip-in > .btn { grid-column: 1 / -1; }
+}
+
+.auth-dlg { width: min(430px, calc(100vw - 32px)); }
+.auth-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: var(--ink); color: #fff; }
+.auth-head h3 { font-size: 26px; text-transform: uppercase; }
+.auth-head small { color: #b9bec6; font-size: 13px; }
+.auth-body { padding: 18px; display: grid; gap: 14px; }
+.auth-body form { display: grid; gap: 12px; }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; background: #eef0ec; border-radius: 10px; padding: 4px; }
+.auth-tabs button { border: 0; background: transparent; padding: 10px; border-radius: 8px; font: 700 15px var(--body); cursor: pointer; color: var(--muted); }
+.auth-tabs button[aria-selected="true"] { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.gbtn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border: 1.5px solid #cfd3cc; border-radius: 8px; background: #fff; font: 600 15px var(--body); color: #1f1f1f; cursor: pointer; }
+.gbtn:hover { background: #f6f7f5; }
+.gbtn[disabled] { opacity: .5; cursor: wait; }
+.or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.lnk-btn { background: none; border: 0; padding: 0; color: #2d5bd1; font: 600 13px var(--body); cursor: pointer; justify-self: start; text-decoration: underline; }
+.okmsg { color: var(--ok); background: var(--ok-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 500; }
+
 </style>
 </head>
 <body>
@@ -248,10 +294,12 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
       <a href="#makinat">Makinat</a>
       <a href="#si">Si funksionon</a>
       <a href="#kontakti">Kontakti</a>
-      <a class="btn btn-y btn-sm" href="#makinat">Rezervo</a>
+      <a class="btn btn-y btn-sm nav-rez" href="#makinat">Rezervo</a>
+      <span id="acct" class="acct"></span>
     </nav>
   </div>
 </header>
+<section id="my-strip" class="my-strip" hidden aria-live="polite"></section>
 
 <main>
   <div class="hero">
@@ -293,8 +341,8 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
     <div class="wrap">
       <div class="head"><div><p class="eyebrow">Tre hapa</p><h2>Si funksionon</h2></div></div>
       <ol class="steps">
-        <li><h3>Dërgo rezervimin</h3><p>Zgjidh makinën, datën e marrjes dhe të kthimit. Çmimi llogaritet menjëherë.</p></li>
-        <li><h3>Ne e konfirmojmë</h3><p>Të kthejmë mesazh në WhatsApp, Viber ose SMS sapo ta aprovojmë. Statusin e sheh edhe online.</p></li>
+        <li><h3>Hyr dhe rezervo</h3><p>Hyr me Google ose me email, zgjidh makinën dhe datat. Çmimi llogaritet menjëherë.</p></li>
+        <li><h3>Ne e konfirmojmë</h3><p>Të kthejmë mesazh sapo ta aprovojmë. Statusin e sheh kurdo te "Rezervimet e mia".</p></li>
         <li><h3>Merr makinën</h3><p>Eja te Autolarje Leli me letërnjoftim dhe patentë shoferi. Makina të pret e pastër.</p></li>
       </ol>
     </div>
@@ -330,7 +378,7 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
 <footer>
   <div class="wrap">
     <span>© <span id="viti"></span> Rent A Car Leli · Te Autolarje Leli</span>
-    <span><a href="rezervimi.html">Kontrollo rezervimin</a> · <a href="admin.html">Admin</a></span>
+    <span><a href="rezervimi.html">Rezervimet e mia</a> · <a href="admin.html">Admin</a></span>
   </div>
 </footer>
 
@@ -755,7 +803,272 @@ const firebase = {
   },
 };
 
+// ============================================================
+//  LLOGARITË E KLIENTËVE (hyrje me email/fjalëkalim ose Google)
+// ============================================================
+function gabimAuth(x) {
+  const c = (x && x.code) || "";
+  if (c.includes("popup-closed") || c.includes("cancelled-popup")) return "";
+  if (c.includes("invalid-credential") || c.includes("wrong-password") || c.includes("user-not-found")) return "Emaili ose fjalëkalimi është gabim.";
+  if (c.includes("email-already-in-use")) return "Ky email ka tashmë llogari. Kliko \"Hyr\" dhe hyr me të.";
+  if (c.includes("weak-password")) return "Fjalëkalimi duhet të ketë së paku 6 karaktere.";
+  if (c.includes("invalid-email")) return "Emaili nuk është i saktë.";
+  if (c.includes("missing-password")) return "Shkruaj fjalëkalimin.";
+  if (c.includes("too-many-requests")) return "Shumë tentime. Provo përsëri pas pak minutash.";
+  if (c.includes("operation-not-allowed") || c.includes("admin-restricted")) return "Kjo mënyrë hyrjeje nuk është aktivizuar ende. Na telefono në 044 296 791.";
+  if (c.includes("unauthorized-domain")) return "Hyrja me Google nuk lejohet nga ky domen ende.";
+  if (c.includes("network-request-failed")) return "Nuk ka internet. Kontrollo lidhjen dhe provo përsëri.";
+  return (x && x.message) || "Diçka nuk shkoi. Provo përsëri.";
+}
+
+const LS_U = "leli_demo_users";
+const LS_CU = "leli_demo_current";
+const klientDemo = {
+  _cbs: new Set(),
+  _cur() { try { return JSON.parse(localStorage.getItem(LS_CU) || "null"); } catch { return null; } },
+  _set(u) { try { u ? localStorage.setItem(LS_CU, JSON.stringify(u)) : localStorage.removeItem(LS_CU); } catch {} this._cbs.forEach((f) => f(u)); },
+  onUser(cb) { this._cbs.add(cb); setTimeout(() => cb(this._cur()), 0); return () => this._cbs.delete(cb); },
+  async signUp(name, email, pw) {
+    const us = lexo(LS_U);
+    if (!/^\S+@\S+\.\S+$/.test(email)) throw { code: "invalid-email" };
+    if (pw.length < 6) throw { code: "weak-password" };
+    if (us.some((u) => u.email === email)) throw { code: "email-already-in-use" };
+    const u = { uid: "u_" + idRastesishme(), email, displayName: name };
+    us.push({ ...u, pw }); try { localStorage.setItem(LS_U, JSON.stringify(us)); } catch {}
+    this._set(u);
+  },
+  async signIn(email, pw) {
+    const u = lexo(LS_U).find((x) => x.email === email && x.pw === pw);
+    if (!u) throw { code: "invalid-credential" };
+    this._set({ uid: u.uid, email: u.email, displayName: u.displayName });
+  },
+  async google() { this._set({ uid: "u_google_demo", email: "demo@gmail.com", displayName: "Klient Demo" }); },
+  async reset() {},
+  async logout() { this._set(null); },
+  watchMine(uid, cb) { return degjo(() => cb(lexo(LS_B).filter((b) => b.uid === uid).sort((a, b) => b.createdAt - a.createdAt))); },
+  async cancel(b) { shkruaj(LS_B, lexo(LS_B).map((x) => (x.id === b.id ? { ...x, status: "cancelled", updatedAt: Date.now() } : x))); },
+};
+
+const klientFirebase = {
+  onUser(cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ au, auth }) => {
+      au.getRedirectResult(auth).catch(() => {});
+      unsub = au.onAuthStateChanged(auth, (u) => cb(u ? { uid: u.uid, email: u.email, displayName: u.displayName, photoURL: u.photoURL } : null));
+    });
+    return () => unsub();
+  },
+  async signUp(name, email, pw) {
+    const { au, auth } = await ngarkoFirebase();
+    const r = await au.createUserWithEmailAndPassword(auth, email, pw);
+    await au.updateProfile(r.user, { displayName: name });
+    await r.user.reload();
+    klientFirebase._refresh && klientFirebase._refresh();
+  },
+  async signIn(email, pw) {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signInWithEmailAndPassword(auth, email, pw);
+  },
+  async google() {
+    const { au, auth } = await ngarkoFirebase();
+    const p = new au.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
+    try { await au.signInWithPopup(auth, p); }
+    catch (x) {
+      const c = (x && x.code) || "";
+      if (c.includes("popup-blocked") || c.includes("operation-not-supported")) return au.signInWithRedirect(auth, p);
+      throw x;
+    }
+  },
+  async reset(email) {
+    const { au, auth } = await ngarkoFirebase();
+    await au.sendPasswordResetEmail(auth, email);
+  },
+  async logout() {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signOut(auth);
+  },
+  watchMine(uid, cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      const q = fs.query(fs.collection(db, "bookings"), fs.where("uid", "==", uid));
+      unsub = fs.onSnapshot(q, (s) => cb(s.docs.map((d) => {
+        const x = d.data();
+        return { id: d.id, ...x, createdAt: x.createdAt?.toMillis?.() || Date.now() };
+      }).sort((a, b) => b.createdAt - a.createdAt)), () => cb([]));
+    });
+    return () => unsub();
+  },
+  async cancel(b) {
+    const { fs, db } = await ngarkoFirebase();
+    await fs.updateDoc(fs.doc(db, "bookings", b.id), { status: "cancelled", updatedAt: fs.serverTimestamp() });
+  },
+};
+
 const api = DEMO ? demo : firebase;
+api.klient = DEMO ? klientDemo : klientFirebase;
+
+</script>
+<script>
+// ============================================================
+//  Hyrja / regjistrimi i klientëve dhe butoni i llogarisë lart
+// ============================================================
+const AuthUI = (() => {
+  const q = (s) => document.querySelector(s);
+  const e = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  let user; // undefined = duke u ngarkuar, null = jo i kyçur
+  let pas = null;
+  let mode = "login";
+  let numri = 0;
+  const subs = new Set();
+
+  const G = `<svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.4 5.7c4.3-4 6.9-9.9 6.9-17.1z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.4-5.7c-2.1 1.4-4.8 2.3-8.5 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>`;
+
+  document.body.insertAdjacentHTML("beforeend", `
+  <dialog id="auth-dlg" class="auth-dlg" aria-labelledby="auth-title">
+    <div class="auth-head">
+      <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#F5B700"/><path d="M22 10V44H54" fill="none" stroke="#15181C" stroke-width="14" stroke-linejoin="round"/><path d="M22 12V44H52" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 4"/></svg>
+      <div><h3 id="auth-title">Hyr në llogari</h3><small id="auth-sub">Për të rezervuar dhe për të parë statusin e rezervimeve</small></div>
+      <button class="x" type="button" id="auth-x" aria-label="Mbyll">×</button>
+    </div>
+    <div class="auth-body">
+      <div class="auth-tabs" role="tablist">
+        <button type="button" role="tab" data-mode="login" aria-selected="true">Hyr</button>
+        <button type="button" role="tab" data-mode="signup" aria-selected="false">Regjistrohu</button>
+      </div>
+      <button type="button" class="gbtn" id="auth-google">${G}<span>Vazhdo me Google</span></button>
+      <div class="or"><span>ose me email</span></div>
+      <form id="auth-form" novalidate>
+        <label class="f" id="auth-name-row" hidden>Emri dhe mbiemri<input type="text" id="auth-name" autocomplete="name" maxlength="80"></label>
+        <label class="f">Emaili<input type="email" id="auth-email" autocomplete="email" required></label>
+        <label class="f">Fjalëkalimi<input type="password" id="auth-pw" autocomplete="current-password" required minlength="6"></label>
+        <button type="button" class="lnk-btn" id="auth-forgot">Harrove fjalëkalimin?</button>
+        <div class="err" id="auth-err" hidden></div>
+        <div class="okmsg" id="auth-ok" hidden></div>
+        <button class="btn btn-y btn-full" type="submit" id="auth-submit">Hyr</button>
+      </form>
+      <p class="note" style="text-align:center">Rezervimet e tua ruhen në llogari dhe i sheh vetëm ti.</p>
+    </div>
+  </dialog>`);
+
+  const dlg = q("#auth-dlg");
+  const err = q("#auth-err"), ok = q("#auth-ok");
+
+  function setMode(m) {
+    mode = m;
+    const sign = m === "signup";
+    q("#auth-title").textContent = sign ? "Krijo llogari" : "Hyr në llogari";
+    q("#auth-name-row").hidden = !sign;
+    q("#auth-forgot").hidden = sign;
+    q("#auth-pw").autocomplete = sign ? "new-password" : "current-password";
+    q("#auth-submit").textContent = sign ? "Krijo llogarinë" : "Hyr";
+    dlg.querySelectorAll("[data-mode]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.mode === m)));
+    err.hidden = true; ok.hidden = true;
+  }
+  function open(m = "login", after = null) {
+    if (after) pas = after;
+    setMode(m);
+    if (typeof dlg.showModal === "function") { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute("open", "");
+  }
+  function close() { if (dlg.open) dlg.close(); }
+  function showErr(x) {
+    const t = typeof x === "string" ? x : gabimAuth(x);
+    if (!t) return;
+    ok.hidden = true; err.hidden = false; err.textContent = t;
+  }
+  function busy(b) {
+    q("#auth-submit").disabled = b; q("#auth-google").disabled = b;
+  }
+
+  dlg.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
+  q("#auth-x").addEventListener("click", () => { pas = null; close(); });
+  dlg.addEventListener("click", (ev) => { if (ev.target === dlg) { pas = null; close(); } });
+
+  q("#auth-google").addEventListener("click", async () => {
+    err.hidden = true; busy(true);
+    try { await api.klient.google(); } catch (x) { showErr(x); } finally { busy(false); }
+  });
+
+  q("#auth-forgot").addEventListener("click", async () => {
+    const em = q("#auth-email").value.trim();
+    if (!em) return showErr("Shkruaj emailin lart, pastaj kliko përsëri \"Harrove fjalëkalimin?\".");
+    try {
+      await api.klient.reset(em);
+      err.hidden = true; ok.hidden = false;
+      ok.textContent = `Të dërguam një email në ${em} për të vendosur fjalëkalim të ri. Kontrollo edhe Spam.`;
+    } catch (x) { showErr(x); }
+  });
+
+  q("#auth-form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const name = q("#auth-name").value.trim();
+    const em = q("#auth-email").value.trim();
+    const pw = q("#auth-pw").value;
+    if (mode === "signup" && name.length < 3) return showErr("Shkruaj emrin dhe mbiemrin.");
+    if (!em) return showErr("Shkruaj emailin.");
+    if (pw.length < 6) return showErr("Fjalëkalimi duhet të ketë së paku 6 karaktere.");
+    err.hidden = true; busy(true);
+    try {
+      if (mode === "signup") {
+        await api.klient.signUp(name, em, pw);
+        if (user && !user.displayName) { user = { ...user, displayName: name }; njofto(); }
+      } else await api.klient.signIn(em, pw);
+      q("#auth-pw").value = "";
+    } catch (x) { showErr(x); } finally { busy(false); }
+  });
+
+  function emriShkurt(u) {
+    const n = (u.displayName || u.email || "").trim();
+    return n.split(/[\s@]/)[0] || "Llogaria";
+  }
+
+  function renderAcct() {
+    const el = q("#acct");
+    if (!el) return;
+    if (user === undefined) { el.innerHTML = ""; return; }
+    if (!user) {
+      el.innerHTML = `<button class="btn btn-line btn-sm acct-in" type="button" data-auth-open="login">Hyr</button>`;
+      return;
+    }
+    const ini = emriShkurt(user).charAt(0).toUpperCase();
+    el.innerHTML = `
+      <a class="acct-chip" href="rezervimi.html" title="Rezervimet e mia">
+        <span class="avatar">${e(ini)}</span>
+        <span class="acct-txt"><small>Rezervimet e mia</small><b>${e(emriShkurt(user))}</b></span>
+        ${numri ? `<span class="acct-badge num">${numri}</span>` : ""}
+      </a>`;
+  }
+
+  document.addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-auth-open]");
+    if (b) { ev.preventDefault(); open(b.dataset.authOpen); }
+    const o = ev.target.closest("[data-logout]");
+    if (o) { ev.preventDefault(); api.klient.logout(); }
+  });
+
+  function njofto() {
+    renderAcct();
+    subs.forEach((f) => f(user));
+  }
+
+  api.klient.onUser((u) => {
+    user = u;
+    njofto();
+    if (u && dlg.open) {
+      close();
+      const f = pas; pas = null;
+      if (f) f(u);
+    }
+  });
+
+  return {
+    onUser(f) { subs.add(f); if (user !== undefined) f(user); },
+    user: () => user,
+    require(f) { if (user) f(user); else open("login", f); },
+    open,
+    setCount(n) { numri = n; renderAcct(); },
+  };
+})();
 
 </script>
 <script>
@@ -838,7 +1151,14 @@ function perditesoKalk(id) {
 }
 
 function hapRezervimin(id) {
+  AuthUI.require(() => hapFormen(id));
+}
+
+function hapFormen(id) {
   aktive = gjejMakinen(id);
+  const u = AuthUI.user();
+  if (u && !$("#f-emri").value) $("#f-emri").value = u.displayName || "";
+  try { if (!$("#f-tel").value) $("#f-tel").value = localStorage.getItem("leli_tel") || ""; } catch {}
   $("#dlg-title").textContent = aktive.emri;
   $("#dlg-sub").textContent = `${aktive.viti} · ${aktive.etiketa}`;
   $("#dlg-img").innerHTML = `<img src="${aktive.foto}" alt="" onerror="this.parentNode.innerHTML=this.dataset.svg" data-svg="${esc(ilustrimi(aktive))}">`;
@@ -915,8 +1235,12 @@ $("#form").addEventListener("submit", async (e) => {
   const btn = $("#f-send");
   btn.disabled = true;
   btn.textContent = "Duke dërguar…";
+  const u = AuthUI.user();
+  if (!u) { btn.disabled = false; btn.textContent = "Dërgo rezervimin"; dlg.close(); return AuthUI.open("login"); }
   try {
     const id = await api.createBooking({
+      uid: u.uid,
+      email: u.email || "",
       carId: aktive.id,
       carName: `${aktive.emri} ${aktive.viti}`,
       from: fNga.value,
@@ -929,12 +1253,8 @@ $("#form").addEventListener("submit", async (e) => {
       cmimi: cmimiDitor(d),
       totali: totali(d),
     });
-    try {
-      const mine = JSON.parse(localStorage.getItem("leli_rezervimet") || "[]");
-      mine.unshift(id);
-      localStorage.setItem("leli_rezervimet", JSON.stringify(mine.slice(0, 10)));
-    } catch {}
-    const link = `rezervimi.html?id=${id}`;
+    try { localStorage.setItem("leli_tel", tel); } catch {}
+    const link = "rezervimi.html";
     $("#form").hidden = true;
     const done = $("#done");
     done.hidden = false;
@@ -942,11 +1262,12 @@ $("#form").addEventListener("submit", async (e) => {
       <div class="ic">✓</div>
       <h3 style="font-size:30px;text-transform:uppercase">Rezervimi u dërgua</h3>
       <p style="margin:0;color:#3c434c;max-width:28em">Faleminderit, ${esc(emri)}. Rezervimi për <b>${esc(aktive.emri)}</b> (${formatoData(fNga.value)} → ${formatoData(fDeri.value)}, ${totali(d)}€) është <b>në pritje</b>. Do të të kthejmë mesazh në <b>${esc(tel)}</b> sapo ta aprovojmë.</p>
-      <p class="note">Kodi i rezervimit</p>
-      <span class="code">${id}</span>
-      <a class="btn btn-dark" href="${link}">Ndiq statusin e rezervimit</a>
+      <p class="note">Statusin e sheh kurdo te "Rezervimet e mia", lart djathtas.</p>
+      <a class="btn btn-dark" href="${link}">Shiko rezervimet e mia</a>
       <p class="note">Për pyetje: 044 296 791 · 049 636 556</p>`;
+    const ruajEmrin = emri, ruajTel = tel;
     $("#form").reset();
+    $("#f-emri").value = ruajEmrin; $("#f-tel").value = ruajTel;
   } catch (x) {
     err.hidden = false;
     err.textContent = "Rezervimi nuk u dërgua. Kontrollo internetin dhe provo përsëri, ose na telefono në 044 296 791.";
@@ -961,6 +1282,46 @@ api.watchBlocks((b) => {
   blocks = b || [];
   renderCars();
   if (dlg.open) perditeso();
+});
+
+// ---------- Rezervimet e mia: shiriti lart me statusin ----------
+const STATUSI = {
+  pending: ["Në pritje", "warn", "Po pret aprovimin. Do të të njoftojmë me mesazh."],
+  approved: ["Aprovuar", "ok", "Makina është gati për ta marrë te Auto Larje Leli."],
+  rejected: ["Refuzuar", "bad", "Makina nuk ishte e lirë për këto data."],
+  cancelled: ["Anuluar", "bad", "Ky rezervim është anuluar."],
+  completed: ["Përfunduar", "ok", "Faleminderit!"],
+};
+let unsubMine = () => {};
+function renderStrip(list) {
+  const el = $("#my-strip");
+  const s = sot();
+  const aktive = (list || []).filter((b) => (b.status === "pending" || b.status === "approved") && b.to >= s);
+  AuthUI.setCount(aktive.length);
+  if (!aktive.length) { el.hidden = true; el.innerHTML = ""; return; }
+  aktive.sort((a, b) => (a.status === b.status ? a.from.localeCompare(b.from) : a.status === "approved" ? -1 : 1));
+  const b = aktive[0];
+  const m = gjejMakinen(b.carId);
+  const [lbl, cls, txt] = STATUSI[b.status] || STATUSI.pending;
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="wrap strip-in">
+      <div class="strip-img">${m ? `<img src="${m.foto}" alt="">` : ""}</div>
+      <div class="strip-main">
+        <small>Rezervimi yt</small>
+        <b>${esc(b.carName)}</b>
+        <span class="num">${formatoData(b.from)} → ${formatoData(b.to)} · ${b.totali}€</span>
+      </div>
+      <div class="strip-st"><span class="pill ${cls}">${lbl}</span><small>${txt}</small></div>
+      <a class="btn btn-dark btn-sm" href="rezervimi.html">${aktive.length > 1 ? `Të gjitha (${aktive.length})` : "Shiko detajet"}</a>
+    </div>`;
+}
+AuthUI.onUser((u) => {
+  unsubMine(); unsubMine = () => {};
+  if (u) {
+    if (!$("#f-emri").value) $("#f-emri").value = u.displayName || "";
+    unsubMine = api.klient.watchMine(u.uid, renderStrip);
+  } else renderStrip([]);
 });
 
 </script>
