@@ -304,6 +304,8 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
   .rz-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; border-top: 1px dashed var(--line); padding-top: 10px; }
   .rz-foot b { font: 800 30px/1 var(--display); }
   .rz-foot small { color: var(--muted); }
+  .rz-contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; background: #f5f6f2; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 500; }
+  .rz-acts { display: flex; gap: 8px; flex-wrap: wrap; }
   .empty { text-align: center; padding: 40px 20px; background: var(--card); border: 1px dashed var(--line); border-radius: 14px; display: grid; gap: 12px; justify-items: center; }
   .me-sec h2 { font-size: 24px; text-transform: uppercase; margin-bottom: 10px; color: var(--muted); }
 </style>
@@ -356,8 +358,8 @@ const CMIMET = [
   { ngaDite: 1, cmimi: 40 },
 ];
 
-// Emaili i llogarisë që hyn në panelin admin (i njëjti si te firestore.rules)
-const ADMIN_EMAIL = "dijar1raqi@gmail.com";
+// Emailat që kanë qasje në panelin admin (të njëjtët si te firestore.rules)
+const ADMIN_EMAILS = ["dijar1raqi@gmail.com", "blerimfraqi@gmail.com"];
 
 // Kopjo këtu të dhënat nga Firebase Console → Project settings → Your apps → Web app.
 // Derisa të mos i vendosësh, faqja punon në "MODALITET DEMO" (të dhënat ruhen vetëm në këtë shfletues).
@@ -1029,6 +1031,14 @@ const AuthUI = (() => {
             <div><dt>Dërguar</dt><dd class="num">${new Date(b.createdAt).toLocaleDateString("sq-AL")}</dd></div>
           </dl>
           <div class="rz-foot"><div><small>Totali · paguhet kur merr makinën</small><br><b class="num">${b.totali}€</b></div>${anulo}</div>
+          ${b.status === "approved" ? `
+          <div class="rz-contact">
+            <span>Për ndryshim ose anulim na kontakto:</span>
+            <span class="rz-acts">
+              <a class="btn btn-ok btn-sm" href="https://wa.me/38344296791?text=${encodeURIComponent(`Përshëndetje, kam rezervimin për ${b.carName} (${formatoData(b.from)} – ${formatoData(b.to)}).`)}" target="_blank" rel="noopener">WhatsApp</a>
+              <a class="btn btn-dark btn-sm" href="tel:+38344296791">Thirr 044 296 791</a>
+            </span>
+          </div>` : ""}
         </div>
       </article>`;
   }

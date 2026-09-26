@@ -2,10 +2,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // NDRYSHO emailin: duhet të jetë i njëjti me llogarinë e adminit në Firebase Authentication
+    // Adminët. Admini i dytë duhet të hyjë me Google (email i verifikuar),
+    // që askush tjetër të mos hapë llogari me emailin e tij.
     function isAdmin() {
-      return request.auth != null
-        && request.auth.token.email == "dijar1raqi@gmail.com";
+      return request.auth != null && (
+        request.auth.token.email == "dijar1raqi@gmail.com"
+        || (request.auth.token.email == "blerimfraqi@gmail.com" && request.auth.token.email_verified == true)
+      );
     }
 
     function validBooking(d) {
