@@ -743,7 +743,7 @@ const firebase = {
     });
     return () => unsub();
   },
-  watchBookings(cb) {
+  watchBookings(cb, onErr) {
     let unsub = () => {};
     ngarkoFirebase().then(({ fs, db }) => {
       const q = fs.query(fs.collection(db, "bookings"), fs.orderBy("createdAt", "desc"), fs.limit(300));
@@ -751,7 +751,8 @@ const firebase = {
         cb(s.docs.map((d) => {
           const x = d.data();
           return { id: d.id, ...x, createdAt: x.createdAt?.toMillis?.() || Date.now() };
-        }))
+        })),
+        (e) => onErr && onErr(e)
       );
     });
     return () => unsub();
@@ -935,7 +936,9 @@ api.onAuth((u) => {
   $("#panel").hidden = !u;
   $("#logout").hidden = !u;
   if (u) {
-    unsubs.push(api.watchBookings((b) => { bookings = b || []; njoftoTeReja(); render(); }));
+    unsubs.push(api.watchBookings((b) => { bookings = b || []; njoftoTeReja(); render(); }, (e) => {
+      $("#list").innerHTML = `<div class="err">Paneli nuk mund t'i lexojë rezervimet për llogarinë ${esc(u.email || "")} (${esc(e && e.code || "gabim")}). Kontrollo që rregullat te Firebase → Firestore → Rules të përmbajnë këtë email dhe të jenë publikuar.</div>`;
+    }));
     unsubs.push(api.watchBlocks((b) => { blocks = b || []; render(); }));
   }
 });
