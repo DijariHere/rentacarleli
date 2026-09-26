@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="sq">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rezervimi im · Rent A Car Leli</title>
+<link rel="icon" href="img/logo-ikona.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .st-wrap { max-width: 620px; margin: 0 auto; padding-block: 48px 72px; display: grid; gap: 20px; }
+  .st-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .st-top { padding: 22px; display: grid; gap: 8px; }
+  .st-top h1 { font-size: 40px; text-transform: uppercase; }
+  .st-top.pending { background: var(--warn-soft); }
+  .st-top.approved { background: var(--ok-soft); }
+  .st-top.rejected, .st-top.cancelled { background: var(--bad-soft); }
+  .st-top.completed { background: #eceee9; }
+  .st-list { margin: 0; padding: 8px 22px 22px; display: grid; }
+  .st-list div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .st-list dt { color: var(--muted); }
+  .st-list dd { margin: 0; font-weight: 600; text-align: right; }
+  .find { display: flex; gap: 10px; flex-wrap: wrap; }
+  .find input { flex: 1 1 220px; font: 400 16px var(--body); padding: 11px 12px; border: 1.5px solid var(--line); border-radius: 8px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Rent A Car Leli – faqja kryesore">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#F5B700"/><path d="M22 10V44H54" fill="none" stroke="#15181C" stroke-width="14" stroke-linejoin="round"/><path d="M22 12V44H52" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 4"/></svg>
+      <span class="brand-txt"><small>RENT A CAR</small><b>LEL<span>I</span></b></span>
+    </a>
+    <nav class="nav"><a class="btn btn-y btn-sm" href="index.html#makinat">Makinat</a></nav>
+  </div>
+</header>
+<main class="wrap">
+  <div class="st-wrap">
+    <div>
+      <p class="eyebrow">Statusi</p>
+      <h2 style="font-size:44px;text-transform:uppercase;margin-top:6px">Rezervimi im</h2>
+    </div>
+    <form class="find" id="find">
+      <label for="kodi" class="eyebrow" style="flex-basis:100%">Kodi i rezervimit</label>
+      <input id="kodi" placeholder="Ngjit kodin këtu" autocomplete="off">
+      <button class="btn btn-dark" type="submit">Kontrollo</button>
+    </form>
+    <div id="out"></div>
+    <p class="note">Për pyetje: <b>044 296 791</b> · nëse nuk përgjigjet: <b>049 636 556</b></p>
+  </div>
+</main>
+<script src="js/config.js"></script>
+<script src="js/cars.js"></script>
+<script src="js/data.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const TXT = {
+  pending:   ["Në pritje", "Rezervimi u pranua dhe po pret aprovimin. Do të të kthejmë mesazh sapo ta konfirmojmë."],
+  approved:  ["Aprovuar", "Makina është gati për ta marrë te Autolarje Leli në datën dhe orën e caktuar. Sill letërnjoftimin dhe patentën."],
+  rejected:  ["Refuzuar", "Na vjen keq, makina nuk është në dispozicion për këto data. Na telefono për një datë tjetër."],
+  cancelled: ["Anuluar", "Ky rezervim është anuluar."],
+  completed: ["Përfunduar", "Faleminderit që zgjodhët Rent A Car Leli!"],
+};
+let unsub = () => {};
+function shfaq(id) {
+  unsub();
+  $("#kodi").value = id;
+  $("#out").innerHTML = `<p class="note">Duke kërkuar…</p>`;
+  unsub = api.watchBooking(id, (b) => {
+    if (!b) { $("#out").innerHTML = `<div class="err">Nuk u gjet asnjë rezervim me këtë kod. Kontrollo kodin ose na telefono.</div>`; return; }
+    const [t, p] = TXT[b.status] || TXT.pending;
+    $("#out").innerHTML = `
+      <div class="st-card">
+        <div class="st-top ${esc(b.status)}">
+          <span class="pill ${b.status === "approved" ? "ok" : b.status === "pending" ? "warn" : "bad"}" style="justify-self:start">${t}</span>
+          <h1>${esc(b.carName)}</h1>
+          <p style="margin:0">${p}</p>
+        </div>
+        <dl class="st-list">
+          <div><dt>Emri</dt><dd>${esc(b.emri)}</dd></div>
+          <div><dt>Marrja</dt><dd class="num">${formatoData(b.from)} · ${esc(b.ora)}</dd></div>
+          <div><dt>Kthimi</dt><dd class="num">${formatoData(b.to)}</dd></div>
+          <div><dt>Ditë</dt><dd class="num">${b.dite} × ${b.cmimi}€</dd></div>
+          <div><dt>Totali</dt><dd class="num" style="font:800 26px var(--display)">${b.totali}€</dd></div>
+        </dl>
+      </div>`;
+  });
+}
+$("#find").addEventListener("submit", (e) => { e.preventDefault(); const v = $("#kodi").value.trim(); if (v) { history.replaceState(null, "", "?id=" + encodeURIComponent(v)); shfaq(v); } });
+const id = new URLSearchParams(location.search).get("id");
+let fundit = null;
+try { fundit = JSON.parse(localStorage.getItem("leli_rezervimet") || "[]")[0]; } catch {}
+if (id) shfaq(id); else if (fundit) shfaq(fundit);
+</script>
+</body>
+</html>

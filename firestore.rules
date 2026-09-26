@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // NDRYSHO emailin: duhet të jetë i njëjti me llogarinë e adminit në Firebase Authentication
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "VENDOS_EMAILIN_E_ADMINIT@gmail.com";
+    }
+
+    function validBooking(d) {
+      return d.keys().hasOnly(['carId','carName','from','to','ora','emri','tel','shenim','dite','cmimi','totali','status','createdAt'])
+        && d.carId in ['astra','corsa','captur']
+        && d.status == 'pending'
+        && d.createdAt == request.time
+        && d.emri is string && d.emri.size() >= 3 && d.emri.size() <= 80
+        && d.tel is string && d.tel.size() >= 8 && d.tel.size() <= 20
+        && d.from is string && d.from.size() == 10
+        && d.to is string && d.to.size() == 10
+        && d.to >= d.from
+        && d.shenim is string && d.shenim.size() <= 300
+        && d.dite is int && d.dite >= 1 && d.dite <= 60
+        && d.totali is int && d.totali <= 2400;
+    }
+
+    // Rezervimet: klienti krijon; klienti e lexon vetëm me kodin (id); vetëm admini i sheh të gjitha dhe i ndryshon
+    match /bookings/{id} {
+      allow create: if validBooking(request.resource.data);
+      allow get: if true;
+      allow list, update, delete: if isAdmin();
+    }
+
+    // Ditët e zëna (pa të dhëna personale): të gjithë i lexojnë, vetëm admini i shkruan
+    match /blocks/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

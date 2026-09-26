@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="sq">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rent A Car Leli</title>
+<meta name="description" content="Rent A Car Leli – makina me qira te Autolarje Leli. Opel Astra, Opel Corsa dhe Renault Captur nga 30€ në ditë. Rezervo online.">
+<link rel="icon" href="img/logo-ikona.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="demo-bar" class="demo-bar" hidden>Modalitet DEMO: rezervimet ruhen vetëm në këtë shfletues. Lidhe Firebase sipas udhëzimeve për ta bërë live.</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Rent A Car Leli">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#F5B700"/><path d="M22 10V44H54" fill="none" stroke="#15181C" stroke-width="14" stroke-linejoin="round"/><path d="M22 12V44H52" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 4"/></svg>
+      <span class="brand-txt"><small>RENT A CAR</small><b>LEL<span>I</span></b></span>
+    </a>
+    <nav class="nav">
+      <a href="#makinat">Makinat</a>
+      <a href="#si">Si funksionon</a>
+      <a href="#kontakti">Kontakti</a>
+      <a class="btn btn-y btn-sm" href="#makinat">Rezervo</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow" style="color:#aab0b8">Te Autolarje Leli</p>
+        <h1>Makina të pastra,<br><em>gati për rrugë.</em></h1>
+        <p>Zgjidh makinën, cakto datat dhe dërgo rezervimin online. Ne ta konfirmojmë me mesazh dhe makina të pret e larë te Autolarje Leli.</p>
+        <div class="hero-cta">
+          <a class="btn btn-y" href="#makinat">Shiko makinat</a>
+          <a class="btn btn-line" href="tel:+38344296791">Thirr 044 296 791</a>
+        </div>
+      </div>
+      <aside class="placard" aria-label="Çmimet">
+        <h2>Çmimi për ditë</h2>
+        <div class="tier"><span>1 ditë</span><b class="num">40<small>€</small></b></div>
+        <div class="tier"><span>2 ditë</span><b class="num">35<small>€/ditë</small></b></div>
+        <div class="tier"><span>3 ditë e më shumë</span><b class="num">30<small>€/ditë</small></b></div>
+        <p>Çmimi vlen për të gjitha makinat.</p>
+      </aside>
+    </div>
+    <div class="road" aria-hidden="true"></div>
+  </div>
+
+  <section id="makinat">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow">Flota jonë</p>
+          <h2>Zgjidh makinën</h2>
+        </div>
+        <p>Makinat që janë të zëna për ditët që zgjedh nuk mund të rezervohen. Rezervimi bëhet i sigurt pasi ta aprovojmë.</p>
+      </div>
+      <div class="cars" id="cars"></div>
+    </div>
+  </section>
+
+  <section id="si" class="steps-sec">
+    <div class="wrap">
+      <div class="head"><div><p class="eyebrow">Tre hapa</p><h2>Si funksionon</h2></div></div>
+      <ol class="steps">
+        <li><h3>Dërgo rezervimin</h3><p>Zgjidh makinën, datën e marrjes dhe të kthimit. Çmimi llogaritet menjëherë.</p></li>
+        <li><h3>Ne e konfirmojmë</h3><p>Të kthejmë mesazh në WhatsApp, Viber ose SMS sapo ta aprovojmë. Statusin e sheh edhe online.</p></li>
+        <li><h3>Merr makinën</h3><p>Eja te Autolarje Leli me letërnjoftim dhe patentë shoferi. Makina të pret e pastër.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="kontakti">
+    <div class="wrap">
+      <div class="head"><div><p class="eyebrow">Na gjeni</p><h2>Kontakti</h2></div></div>
+      <div class="contact">
+        <div class="box">
+          <h3>Telefono</h3>
+          <div class="phone">
+            <div><small>Numri kryesor</small><b class="num">044 296 791</b></div>
+            <div class="acts"><a class="btn btn-dark btn-sm" href="tel:+38344296791">Thirr</a><a class="btn btn-line btn-sm" href="https://wa.me/38344296791" target="_blank" rel="noopener">WhatsApp</a></div>
+          </div>
+          <div class="phone">
+            <div><small>Nëse nuk përgjigjet i pari</small><b class="num">049 636 556</b></div>
+            <div class="acts"><a class="btn btn-dark btn-sm" href="tel:+38349636556">Thirr</a><a class="btn btn-line btn-sm" href="https://wa.me/38349636556" target="_blank" rel="noopener">WhatsApp</a></div>
+          </div>
+        </div>
+        <div class="box map-box">
+          <div class="map-grid" aria-hidden="true"></div>
+          <svg class="pin" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4c-8 0-14 6-14 14 0 10 14 26 14 26s14-16 14-26c0-8-6-14-14-14z" fill="#F5B700"/><circle cx="24" cy="18" r="5" fill="#15181C"/></svg>
+          <h3>Autolarje Leli</h3>
+          <p>Makinat merren dhe kthehen te lavazhi. Kur vjen, pyet për Rent A Car Leli.</p>
+          <a class="btn btn-y" href="https://share.google/XmGibrxjUK9DVoWyP" target="_blank" rel="noopener">Hap në Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="viti"></span> Rent A Car Leli · Te Autolarje Leli</span>
+    <span><a href="rezervimi.html">Kontrollo rezervimin</a> · <a href="admin.html">Admin</a></span>
+  </div>
+</footer>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <div class="dlg-head">
+    <div class="mini" id="dlg-img"></div>
+    <div><h3 id="dlg-title">Rezervo</h3><small id="dlg-sub"></small></div>
+    <button class="x" type="button" id="dlg-x" aria-label="Mbyll">×</button>
+  </div>
+  <form id="form" class="dlg-body" novalidate>
+    <div class="row2">
+      <label class="f">Data e marrjes<input type="date" id="f-nga" required></label>
+      <label class="f">Data e kthimit<input type="date" id="f-deri" required></label>
+    </div>
+    <label class="f">Ora e marrjes
+      <select id="f-ora">
+        <option>08:00</option><option>09:00</option><option selected>10:00</option><option>11:00</option><option>12:00</option>
+        <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option>
+      </select>
+    </label>
+    <div class="row2">
+      <label class="f">Emri dhe mbiemri<input type="text" id="f-emri" autocomplete="name" required maxlength="80"></label>
+      <label class="f">Telefoni (WhatsApp/Viber)<input type="tel" id="f-tel" autocomplete="tel" placeholder="044 123 456" required maxlength="20"></label>
+    </div>
+    <label class="f">Shënim (opsional)<textarea id="f-shenim" rows="2" maxlength="300" placeholder="P.sh. do e marr në aeroport, kam nevojë për ulëse fëmije…"></textarea></label>
+    <label class="check"><input type="checkbox" id="f-patenta" required> Kam patentë shoferi të vlefshme dhe do të sjell letërnjoftimin.</label>
+    <div class="sum" id="sum"></div>
+    <div class="err" id="err" hidden></div>
+    <button class="btn btn-y" type="submit" id="f-send">Dërgo rezervimin</button>
+    <p class="note">Pagesa bëhet kur merr makinën. Rezervimi konfirmohet pasi ta aprovojmë.</p>
+  </form>
+  <div id="done" class="done" hidden></div>
+</dialog>
+
+<script src="js/config.js"></script>
+<script src="js/cars.js"></script>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+</body>
+</html>
