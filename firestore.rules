@@ -5,7 +5,7 @@ service cloud.firestore {
     // NDRYSHO emailin: duhet të jetë i njëjti me llogarinë e adminit në Firebase Authentication
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email == "VENDOS_EMAILIN_E_ADMINIT@gmail.com";
+        && request.auth.token.email == "dijar1raqi@gmail.com";
     }
 
     function validBooking(d) {
