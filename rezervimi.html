@@ -4,9 +4,233 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rezervimi im · Rent A Car Leli</title>
-<link rel="icon" href="img/logo-ikona.svg" type="image/svg+xml">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNGNUI3MDAiLz48cGF0aCBkPSJNMjIgMTBWNDRINTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE1MTgxQyIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMiAxMlY0NEg1MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1kYXNoYXJyYXk9IjQgNCIvPjwvc3ZnPgo=" type="image/svg+xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="css/style.css">
+<style>
+:root {
+  --ink: #15181c;
+  --ink-2: #23272d;
+  --paper: #f3f4f1;
+  --card: #ffffff;
+  --line: #d9dcd5;
+  --muted: #5b636e;
+  --text: #1a1d21;
+  --yellow: #f5b700;
+  --yellow-soft: #fff4cc;
+  --ok: #1d7a4c;
+  --ok-soft: #e3f3ea;
+  --warn: #a4640b;
+  --warn-soft: #fdf0d9;
+  --bad: #b42318;
+  --bad-soft: #fbe6e4;
+  --radius: 10px;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Barlow", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font: 400 16px/1.55 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: .005em; }
+.wrap { width: 100%; max-width: 1140px; margin: 0 auto; padding-inline: 20px; }
+.num { font-variant-numeric: tabular-nums; }
+.eyebrow { font: 600 13px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+/* ---------- Header ---------- */
+.top {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--ink); color: #fff;
+  border-bottom: 1px solid #000;
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand svg { width: 44px; height: 44px; flex: none; }
+.brand-txt { display: grid; line-height: 1; }
+.brand-txt small { font: 600 11px/1 var(--body); letter-spacing: .22em; color: #c9ccd1; }
+.brand-txt b { font: 800 26px/1 var(--display); letter-spacing: .02em; }
+.brand-txt b span { color: var(--yellow); }
+.nav { display: flex; align-items: center; gap: 22px; font-weight: 500; }
+.nav a { text-decoration: none; color: #d8dbe0; }
+.nav a:hover { color: #fff; }
+.nav .tel { display: none; }
+@media (max-width: 760px) { .nav a:not(.btn) { display: none; } }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font: 700 15px/1 var(--body); letter-spacing: .02em;
+  padding: 13px 20px; border-radius: 8px; border: 2px solid transparent;
+  cursor: pointer; text-decoration: none; transition: transform .12s, background .15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn-y { background: var(--yellow); color: #1b1400; }
+.btn-y:hover { background: #ffc61a; }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { background: var(--ink-2); }
+.btn-line { background: transparent; border-color: currentColor; }
+.btn-sm { padding: 9px 14px; font-size: 14px; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.btn-ok { background: var(--ok); color: #fff; }
+.btn-bad { background: #fff; color: var(--bad); border-color: #e7b7b2; }
+
+/* ---------- Hero ---------- */
+.hero { background: var(--ink); color: #fff; position: relative; overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: 1.25fr .9fr; gap: 48px; padding-block: 64px 88px; align-items: center; }
+.hero h1 { font-size: clamp(44px, 7vw, 84px); font-weight: 800; text-transform: uppercase; }
+.hero h1 em { font-style: normal; color: var(--yellow); }
+.hero p { color: #c8ccd2; font-size: 18px; max-width: 34em; margin: 20px 0 28px; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-cta .btn-line { color: #fff; }
+.road {
+  position: absolute; left: 0; right: 0; bottom: 26px; height: 6px;
+  background: repeating-linear-gradient(90deg, var(--yellow) 0 56px, transparent 56px 96px);
+  opacity: .9;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .road { animation: road 2.4s linear infinite; }
+  @keyframes road { to { background-position: -96px 0; } }
+}
+
+/* Price placard */
+.placard {
+  background: var(--yellow); color: #1b1400; border-radius: 14px;
+  padding: 26px 26px 20px; border: 4px solid #1b1400;
+  box-shadow: 0 0 0 4px var(--yellow), 0 24px 50px rgba(0,0,0,.35);
+}
+.placard h2 { font-size: 22px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+.tier { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 2px solid rgba(27,20,0,.2); }
+.tier span { font-weight: 600; font-size: 17px; }
+.tier b { font: 800 44px/1 var(--display); }
+.tier b small { font: 600 15px var(--body); margin-left: 2px; }
+.placard p { margin: 10px 0 0; font-size: 13px; font-weight: 500; color: #3d3100; }
+
+/* ---------- Sections ---------- */
+section { padding-block: 72px; }
+.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; margin-bottom: 32px; }
+.head h2 { font-size: clamp(34px, 5vw, 52px); font-weight: 800; text-transform: uppercase; margin-top: 8px; }
+.head p { color: var(--muted); max-width: 30em; margin: 0; }
+
+/* ---------- Car cards ---------- */
+.cars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+@media (max-width: 980px) { .cars { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .cars { grid-template-columns: 1fr; } .hero .wrap { grid-template-columns: 1fr; } }
+@media (max-width: 900px) and (min-width: 641px) { .hero .wrap { grid-template-columns: 1fr; } .placard { max-width: 460px; } }
+.car { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.car-img { position: relative; aspect-ratio: 16 / 10; background: linear-gradient(180deg, #eceee9, #dfe2dc); display: grid; place-items: center; }
+.car-img img { width: 100%; height: 100%; object-fit: cover; }
+.car-img svg { width: 88%; }
+.car-year { position: absolute; top: 12px; left: 12px; background: var(--ink); color: #fff; font: 700 13px/1 var(--body); padding: 7px 10px; border-radius: 6px; }
+.pill { display: inline-flex; align-items: center; gap: 7px; font: 700 13px/1 var(--body); padding: 7px 11px; border-radius: 999px; }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.car-img .pill { position: absolute; top: 12px; right: 12px; }
+.car-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.car-title { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.car-title h3 { font-size: 30px; font-weight: 700; text-transform: uppercase; }
+.car-title span { color: var(--muted); font-weight: 600; font-size: 14px; white-space: nowrap; }
+.car-body p { margin: 0; color: #3c434c; font-size: 15px; }
+.specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin: 0; }
+.specs div { background: #fafbf8; padding: 9px 10px; }
+.specs dt { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.specs dd { margin: 2px 0 0; font-weight: 600; font-size: 14px; }
+.busy { font-size: 13px; color: var(--muted); margin: 0; }
+.busy b { color: var(--bad); font-weight: 600; }
+.car-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 4px; }
+.from { line-height: 1.1; }
+.from small { display: block; font-size: 12px; color: var(--muted); }
+.from b { font: 800 32px/1 var(--display); }
+
+/* ---------- Steps ---------- */
+.steps-sec { background: #e8eae4; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: s; list-style: none; padding: 0; margin: 0; }
+@media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+.steps li { counter-increment: s; padding-top: 18px; border-top: 3px solid var(--ink); }
+.steps li::before { content: counter(s); font: 800 44px/1 var(--display); color: var(--yellow); -webkit-text-stroke: 1.5px var(--ink); }
+.steps h3 { font-size: 24px; text-transform: uppercase; margin: 10px 0 6px; }
+.steps p { margin: 0; color: #3c434c; }
+
+/* ---------- Contact ---------- */
+.contact { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 760px) { .contact { grid-template-columns: 1fr; } }
+.box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 26px; }
+.box h3 { font-size: 26px; text-transform: uppercase; margin-bottom: 10px; }
+.phone { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.phone b { font: 700 30px/1 var(--display); letter-spacing: .02em; }
+.phone small { display: block; color: var(--muted); font-size: 13px; }
+.phone .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.map-box { background: var(--ink); color: #fff; border: 0; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; }
+.map-box p { color: #c8ccd2; margin: 0; }
+.map-grid { position: absolute; inset: 0; opacity: .12; background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 28px 28px; pointer-events: none; }
+.pin { width: 54px; height: 54px; }
+.map-box > * { position: relative; }
+.map-box .btn { align-self: flex-start; margin-top: auto; }
+
+footer { background: var(--ink); color: #9ea4ad; padding-block: 28px; font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+footer a { color: #9ea4ad; }
+
+/* ---------- Dialog / forms ---------- */
+dialog { border: 0; padding: 0; border-radius: 16px; width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px); background: var(--card); color: var(--text); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+dialog::backdrop { background: rgba(10,12,15,.6); }
+.dlg-head { display: flex; align-items: center; gap: 14px; padding: 18px 20px; background: var(--ink); color: #fff; }
+.dlg-head .mini { width: 92px; flex: none; background: #2a2f36; border-radius: 8px; padding: 4px; }
+.dlg-head h3 { font-size: 26px; text-transform: uppercase; }
+.dlg-head small { color: #b9bec6; }
+.x { margin-left: auto; background: transparent; border: 0; color: #fff; font-size: 28px; line-height: 1; cursor: pointer; padding: 4px 8px; }
+.dlg-body { padding: 20px; display: grid; gap: 14px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 460px) { .row2 { grid-template-columns: 1fr; } }
+label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+.f input, .f select, .f textarea {
+  font: 400 16px var(--body); padding: 11px 12px; border: 1.5px solid var(--line); border-radius: 8px; background: #fff; color: var(--text); width: 100%;
+}
+.f input:focus, .f select:focus, .f textarea:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px var(--yellow-soft); }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+.check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--ink); }
+.sum { background: var(--yellow-soft); border: 1.5px solid #f0d77a; border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; }
+.sum .l { display: flex; justify-content: space-between; font-size: 15px; }
+.sum .t { display: flex; justify-content: space-between; align-items: baseline; border-top: 1.5px dashed #d9bd55; padding-top: 8px; margin-top: 4px; }
+.sum .t b { font: 800 34px/1 var(--display); }
+.err { color: var(--bad); background: var(--bad-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 500; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.done { text-align: center; padding: 30px 22px; display: grid; gap: 12px; justify-items: center; }
+.done .ic { width: 64px; height: 64px; border-radius: 50%; background: var(--warn-soft); color: var(--warn); display: grid; place-items: center; font: 800 34px var(--display); }
+.code { font: 700 15px ui-monospace, Menlo, Consolas, monospace; background: #f1f2ef; padding: 8px 12px; border-radius: 6px; word-break: break-all; }
+
+.demo-bar { background: var(--yellow); color: #1b1400; font-size: 14px; font-weight: 600; text-align: center; padding: 8px 16px; }
+
+/* ---------- Kalkulatori i çmimit në kartelë ---------- */
+.calc { margin-top: auto; background: #f6f7f3; border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 12px; }
+.calc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.calc-lbl { font-weight: 700; font-size: 14px; }
+.stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--ink); border-radius: 8px; overflow: hidden; background: #fff; }
+.stepper button { width: 38px; height: 38px; border: 0; background: #fff; font: 700 20px/1 var(--body); cursor: pointer; color: var(--text); }
+.stepper button:hover:not([disabled]) { background: var(--yellow-soft); }
+.stepper button[disabled] { color: #c3c7cc; cursor: not-allowed; }
+.stepper output { min-width: 70px; text-align: center; font-weight: 700; border-inline: 1.5px solid var(--line); line-height: 38px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 11px; font: 600 13px var(--body); cursor: pointer; color: var(--text); }
+.chip:hover { border-color: var(--ink); }
+.chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.calc-total { display: flex; justify-content: space-between; align-items: end; gap: 10px; border-top: 1.5px dashed var(--line); padding-top: 10px; }
+.calc-total span { color: var(--muted); font-size: 14px; font-weight: 600; display: block; }
+.calc-total em { font-style: normal; font-size: 12px; font-weight: 700; color: var(--ok); background: var(--ok-soft); padding: 3px 8px; border-radius: 999px; display: inline-block; margin-top: 4px; }
+.calc-total b { font: 800 40px/1 var(--display); }
+.btn-full { width: 100%; }
+.dlg-head .mini img { border-radius: 6px; aspect-ratio: 16/10; object-fit: cover; width: 100%; }
+
+</style>
 <style>
   .st-wrap { max-width: 620px; margin: 0 auto; padding-block: 48px 72px; display: grid; gap: 20px; }
   .st-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
@@ -49,9 +273,399 @@
     <p class="note">Për pyetje: <b>044 296 791</b> · nëse nuk përgjigjet: <b>049 636 556</b></p>
   </div>
 </main>
-<script src="js/config.js"></script>
-<script src="js/cars.js"></script>
-<script src="js/data.js"></script>
+<script>
+// ============================================================
+//  RENT A CAR LELI — CILËSIMET KRYESORE
+//  Këtu ndryshon numrat, çmimet, lokacionin dhe Firebase.
+// ============================================================
+
+const BIZNESI = {
+  emri: "Rent A Car Leli",
+  lokacioni: "Te Autolarje Leli",
+  hartaLink: "https://share.google/XmGibrxjUK9DVoWyP",
+  telefoni1: "044 296 791",
+  telefoni2: "049 636 556",
+};
+
+// Çmimi për ditë sipas numrit të ditëve
+//  1 ditë  -> 40€ / ditë
+//  2 ditë  -> 35€ / ditë
+//  3+ ditë -> 30€ / ditë
+const CMIMET = [
+  { ngaDite: 3, cmimi: 30 },
+  { ngaDite: 2, cmimi: 35 },
+  { ngaDite: 1, cmimi: 40 },
+];
+
+// Emaili i llogarisë që hyn në panelin admin (i njëjti si te firestore.rules)
+const ADMIN_EMAIL = "VENDOS_EMAILIN_E_ADMINIT@gmail.com";
+
+// Kopjo këtu të dhënat nga Firebase Console → Project settings → Your apps → Web app.
+// Derisa të mos i vendosësh, faqja punon në "MODALITET DEMO" (të dhënat ruhen vetëm në këtë shfletues).
+const FIREBASE_CONFIG = {
+  apiKey: "VENDOS_API_KEY",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+};
+
+const DEMO = FIREBASE_CONFIG.apiKey.startsWith("VENDOS");
+
+</script>
+<script>
+// ============================================================
+//  MAKINAT — ndrysho të dhënat këtu.
+//  Foto: vendos foto reale në img/makinat/ me emrat astra.jpg, corsa.jpg, captur.jpg
+//  Derisa të mos ketë foto, shfaqet një ilustrim me ngjyrën e makinës.
+// ============================================================
+
+const MAKINAT = [
+  {
+    id: "astra",
+    emri: "Opel Astra K",
+    viti: 2022,
+    etiketa: "E bardhë",
+    ngjyra: "#E9ECEF",
+    ngjyraEmri: "E bardhë",
+    forma: "hatch",
+    foto: "img/makinat/astra.jpg",
+    pershkrimi:
+      "Modeli më i ri në flotë. Komode për rrugë të gjata, e qetë në autostradë dhe me konsum të ulët. Zgjedhja e duhur për udhëtime familjare ose pune.",
+    specifikat: {
+      "Ulëse": "5",
+      "Dyer": "5",
+      "Karburanti": "Naftë",
+      "Transmisioni": "Automatik",
+      "Bagazhi": "370 L",
+      "Klima": "Po",
+    },
+  },
+  {
+    id: "corsa",
+    emri: "Opel Corsa E",
+    viti: 2017,
+    etiketa: "Argjendi",
+    ngjyra: "#B8BDC4",
+    ngjyraEmri: "Argjendi",
+    forma: "small",
+    foto: "img/makinat/corsa.jpg",
+    pershkrimi:
+      "E vogël, e lehtë për t'u parkuar dhe shumë ekonomike. Perfekte për qytet dhe për rrugë të shkurtra brenda Kosovës.",
+    specifikat: {
+      "Ulëse": "5",
+      "Dyer": "5",
+      "Karburanti": "Naftë",
+      "Transmisioni": "Automatik",
+      "Bagazhi": "285 L",
+      "Klima": "Po",
+    },
+  },
+  {
+    id: "captur",
+    emri: "Renault Captur",
+    viti: 2016,
+    etiketa: "E kuqe · çati e zezë",
+    ngjyra: "#C1272D",
+    ngjyraEmri: "E kuqe",
+    forma: "suv",
+    foto: "img/makinat/captur.jpg",
+    pershkrimi:
+      "Crossover me pozicion të lartë ulje dhe pamje të mirë të rrugës. Hapësirë e bollshme për bagazhe dhe e sigurt edhe në rrugë malore.",
+    specifikat: {
+      "Ulëse": "5",
+      "Dyer": "5",
+      "Karburanti": "Naftë",
+      "Transmisioni": "Automatik",
+      "Bagazhi": "377 L",
+      "Klima": "Po",
+    },
+  },
+];
+
+function gjejMakinen(id) {
+  return MAKINAT.find((m) => m.id === id);
+}
+
+// Ilustrim anësor i makinës (përdoret kur nuk ka foto)
+function ilustrimi(makina) {
+  const c = makina.ngjyra;
+  const suv = makina.forma === "suv";
+  const small = makina.forma === "small";
+  const trupi = suv
+    ? "M24,128 L24,104 Q26,92 44,88 L108,78 Q138,48 172,40 L276,38 Q304,38 332,72 L366,80 Q380,84 380,100 L380,128 Z"
+    : small
+    ? "M40,132 L40,112 Q42,100 58,96 L118,86 Q146,58 178,50 L262,48 Q290,48 318,82 L350,90 Q362,94 362,108 L362,132 Z"
+    : "M22,132 L22,112 Q24,100 40,96 L110,86 Q140,58 175,48 L270,46 Q300,46 330,80 L368,88 Q382,92 382,108 L382,132 Z";
+  const xamiA = suv
+    ? "M118,78 Q144,54 174,47 L218,46 L220,78 Z"
+    : small
+    ? "M126,86 Q150,64 180,57 L216,56 L218,86 Z"
+    : "M120,86 Q146,62 176,55 L220,54 L222,86 Z";
+  const xamiB = suv
+    ? "M230,78 L228,46 L272,46 Q296,48 322,76 Z"
+    : small
+    ? "M228,86 L226,56 L260,56 Q282,58 306,84 Z"
+    : "M232,86 L230,54 L268,54 Q292,56 318,84 Z";
+  const r = suv ? 28 : small ? 23 : 25;
+  const wy = suv ? 128 : 132;
+  const w1 = suv ? 96 : small ? 102 : 95;
+  const w2 = suv ? 306 : small ? 298 : 305;
+  const rrota = (x) => `
+    <circle cx="${x}" cy="${wy}" r="${r + 4}" fill="#101215"/>
+    <circle cx="${x}" cy="${wy}" r="${r}" fill="#1C1F24"/>
+    <circle cx="${x}" cy="${wy}" r="${r * 0.62}" fill="#9AA1AB"/>
+    <circle cx="${x}" cy="${wy}" r="${r * 0.18}" fill="#50565F"/>`;
+  const front = suv ? 28 : small ? 44 : 26;
+  const back = suv ? 372 : small ? 354 : 374;
+  return `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${makina.emri}">
+    <ellipse cx="200" cy="${wy + r + 2}" rx="180" ry="8" fill="#000" opacity=".12"/>
+    <path d="${trupi}" fill="${c}"/>
+    <path d="${trupi}" fill="url(#shk-${makina.id})"/>
+    ${suv ? `<path d="M24,128 L24,116 L380,116 L380,128 Z" fill="#23262B"/>` : ""}
+    <path d="${xamiA}" fill="#1E2A36" opacity=".92"/>
+    <path d="${xamiB}" fill="#1E2A36" opacity=".92"/>
+    <line x1="226" y1="${suv ? 80 : 88}" x2="224" y2="${suv ? 114 : 124}" stroke="#000" stroke-opacity=".18" stroke-width="1.5"/>
+    <rect x="${front}" y="${suv ? 94 : 102}" width="16" height="7" rx="3" fill="#F4F1E6"/>
+    <rect x="${back - 12}" y="${suv ? 86 : 94}" width="10" height="9" rx="2" fill="#B3121B"/>
+    ${rrota(w1)}${rrota(w2)}
+    <defs><linearGradient id="shk-${makina.id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
+      <stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".22"/>
+    </linearGradient></defs>
+  </svg>`;
+}
+
+</script>
+<script>
+// ============================================================
+//  Shtresa e të dhënave: Firebase (kur është konfiguruar) ose DEMO (localStorage)
+// ============================================================
+
+// ---------- Llogaritja e çmimit ----------
+function dataNeDite(s) {
+  const [y, m, d] = s.split("-").map(Number);
+  return Date.UTC(y, m - 1, d) / 86400000;
+}
+function sot() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function shtoDite(s, n) {
+  const t = new Date((dataNeDite(s) + n) * 86400000);
+  return t.toISOString().slice(0, 10);
+}
+function numriDiteve(nga, deri) {
+  if (!nga || !deri) return 0;
+  const n = dataNeDite(deri) - dataNeDite(nga);
+  return n < 0 ? 0 : Math.max(1, n);
+}
+function cmimiDitor(dite) {
+  for (const c of CMIMET) if (dite >= c.ngaDite) return c.cmimi;
+  return CMIMET[CMIMET.length - 1].cmimi;
+}
+function totali(dite) {
+  return dite * cmimiDitor(dite);
+}
+// Intervali i zënë: [nga, deri) — nëse kthehet po atë ditë, zë 1 ditë
+function interval(nga, deri) {
+  const a = dataNeDite(nga);
+  return [a, Math.max(dataNeDite(deri), a + 1)];
+}
+function mbivendosen(a1, a2, b1, b2) {
+  const [x1, x2] = interval(a1, a2);
+  const [y1, y2] = interval(b1, b2);
+  return x1 < y2 && y1 < x2;
+}
+function formatoData(s) {
+  if (!s) return "";
+  const [y, m, d] = s.split("-");
+  return `${d}.${m}.${y}`;
+}
+
+// ---------- Numrat e telefonit (Kosovë) ----------
+function telNderkombetar(t) {
+  let n = String(t || "").replace(/[^\d+]/g, "");
+  if (n.startsWith("+")) return n.slice(1);
+  if (n.startsWith("00")) return n.slice(2);
+  if (n.startsWith("0")) return "383" + n.slice(1);
+  return n;
+}
+
+// ============================================================
+//  DEMO (localStorage) — punon vetëm në një shfletues, për provë
+// ============================================================
+const LS_B = "leli_demo_bookings";
+const LS_K = "leli_demo_blocks";
+const degjuesit = new Set();
+
+function lexo(k) {
+  try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch { return []; }
+}
+function shkruaj(k, v) {
+  try { localStorage.setItem(k, JSON.stringify(v)); } catch {}
+  degjuesit.forEach((f) => f());
+}
+try {
+  window.addEventListener("storage", () => degjuesit.forEach((f) => f()));
+} catch {}
+function degjo(f) {
+  degjuesit.add(f);
+  f();
+  return () => degjuesit.delete(f);
+}
+function idRastesishme() {
+  const c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+  let s = "";
+  for (let i = 0; i < 20; i++) s += c[Math.floor(Math.random() * c.length)];
+  return s;
+}
+
+const demo = {
+  async createBooking(b) {
+    const id = idRastesishme();
+    const all = lexo(LS_B);
+    all.push({ ...b, id, status: "pending", createdAt: Date.now() });
+    shkruaj(LS_B, all);
+    return id;
+  },
+  watchBooking(id, cb) {
+    return degjo(() => cb(lexo(LS_B).find((x) => x.id === id) || null));
+  },
+  watchBlocks(cb) {
+    return degjo(() => cb(lexo(LS_K)));
+  },
+  watchBookings(cb) {
+    return degjo(() => cb(lexo(LS_B).sort((a, b) => b.createdAt - a.createdAt)));
+  },
+  async setStatus(b, status) {
+    const all = lexo(LS_B).map((x) => (x.id === b.id ? { ...x, status, updatedAt: Date.now() } : x));
+    shkruaj(LS_B, all);
+    let bl = lexo(LS_K).filter((k) => k.id !== b.id);
+    if (status === "approved") bl.push({ id: b.id, carId: b.carId, from: b.from, to: b.to, burimi: "rezervim" });
+    shkruaj(LS_K, bl);
+  },
+  async addManualBlock(carId, from, to, shenim) {
+    const bl = lexo(LS_K);
+    bl.push({ id: "m_" + idRastesishme(), carId, from, to, shenim: shenim || "", burimi: "manual" });
+    shkruaj(LS_K, bl);
+  },
+  async removeBlock(id) {
+    shkruaj(LS_K, lexo(LS_K).filter((k) => k.id !== id));
+  },
+  onAuth(cb) {
+    let u = null;
+    try { u = sessionStorage.getItem("leli_demo_admin") ? { email: "demo" } : null; } catch {}
+    cb(u);
+    this._authCb = cb;
+    return () => {};
+  },
+  async login(email, pw) {
+    if (pw !== "demo") throw new Error("Në modalitetin demo fjalëkalimi është: demo");
+    try { sessionStorage.setItem("leli_demo_admin", "1"); } catch {}
+    this._authCb && this._authCb({ email: "demo" });
+  },
+  async logout() {
+    try { sessionStorage.removeItem("leli_demo_admin"); } catch {}
+    this._authCb && this._authCb(null);
+  },
+};
+
+// ============================================================
+//  FIREBASE
+// ============================================================
+const V = "10.12.2";
+let fb = null;
+async function ngarkoFirebase() {
+  if (fb) return fb;
+  const app = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+  const fs = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+  const au = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+  const a = app.initializeApp(FIREBASE_CONFIG);
+  fb = { fs, au, db: fs.getFirestore(a), auth: au.getAuth(a) };
+  return fb;
+}
+
+const firebase = {
+  async createBooking(b) {
+    const { fs, db } = await ngarkoFirebase();
+    const ref = await fs.addDoc(fs.collection(db, "bookings"), {
+      ...b,
+      status: "pending",
+      createdAt: fs.serverTimestamp(),
+    });
+    return ref.id;
+  },
+  watchBooking(id, cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      unsub = fs.onSnapshot(
+        fs.doc(db, "bookings", id),
+        (s) => cb(s.exists() ? { id: s.id, ...s.data() } : null),
+        () => cb(null)
+      );
+    });
+    return () => unsub();
+  },
+  watchBlocks(cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      unsub = fs.onSnapshot(fs.collection(db, "blocks"), (q) =>
+        cb(q.docs.map((d) => ({ id: d.id, ...d.data() })))
+      );
+    });
+    return () => unsub();
+  },
+  watchBookings(cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      const q = fs.query(fs.collection(db, "bookings"), fs.orderBy("createdAt", "desc"), fs.limit(300));
+      unsub = fs.onSnapshot(q, (s) =>
+        cb(s.docs.map((d) => {
+          const x = d.data();
+          return { id: d.id, ...x, createdAt: x.createdAt?.toMillis?.() || Date.now() };
+        }))
+      );
+    });
+    return () => unsub();
+  },
+  async setStatus(b, status) {
+    const { fs, db } = await ngarkoFirebase();
+    const batch = fs.writeBatch(db);
+    batch.update(fs.doc(db, "bookings", b.id), { status, updatedAt: fs.serverTimestamp() });
+    const blockRef = fs.doc(db, "blocks", b.id);
+    if (status === "approved") batch.set(blockRef, { carId: b.carId, from: b.from, to: b.to, burimi: "rezervim" });
+    else batch.delete(blockRef);
+    await batch.commit();
+  },
+  async addManualBlock(carId, from, to, shenim) {
+    const { fs, db } = await ngarkoFirebase();
+    await fs.addDoc(fs.collection(db, "blocks"), { carId, from, to, shenim: shenim || "", burimi: "manual" });
+  },
+  async removeBlock(id) {
+    const { fs, db } = await ngarkoFirebase();
+    await fs.deleteDoc(fs.doc(db, "blocks", id));
+  },
+  onAuth(cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ au, auth }) => { unsub = au.onAuthStateChanged(auth, cb); });
+    return () => unsub();
+  },
+  async login(email, pw) {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signInWithEmailAndPassword(auth, email, pw);
+  },
+  async logout() {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signOut(auth);
+  },
+};
+
+const api = DEMO ? demo : firebase;
+
+</script>
 <script>
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
