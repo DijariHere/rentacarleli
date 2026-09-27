@@ -713,6 +713,7 @@ const TR = {
   "Lexo review-t në Google": "Read our Google reviews",
   "Si ishte përvoja jote?": "How was your experience?",
   "Lër një review në Google": "Leave a Google review",
+  "Si ishte përvoja jote? Na lër një review në Google.": "How was your experience? Leave us a Google review.",
   "Jo, faleminderit": "No, thanks",
   "Faleminderit {emri} që udhëtove me {car}! Nëse ishe i kënaqur, një review i shkurtër në Google na ndihmon shumë. Merr vetëm 30 sekonda.":
     "Thanks {emri} for driving with {car}! If you enjoyed it, a short Google review helps us a lot. It only takes 30 seconds.",
@@ -1365,6 +1366,11 @@ const ReviewPrompt = (() => {
             <div><dt>Dërguar</dt><dd class="num">${new Date(b.createdAt).toLocaleDateString(LANG === "en" ? "en-GB" : "sq-AL")}</dd></div>
           </dl>
           <div class="rz-foot"><div><small>Totali · paguhet kur merr makinën</small><br><b class="num">${b.totali}€</b></div>${anulo}</div>
+          ${b.status === "completed" ? `
+          <div class="rz-contact">
+            <span>${t("Si ishte përvoja jote? Na lër një review në Google.")}</span>
+            <a class="btn btn-y btn-sm" href="${BIZNESI.reviewLink}" target="_blank" rel="noopener">★ ${t("Lër një review në Google")}</a>
+          </div>` : ""}
           ${b.status === "approved" ? `
           <div class="rz-contact">
             <span>Për ndryshim ose anulim na kontakto:</span>
