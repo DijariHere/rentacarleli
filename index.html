@@ -286,6 +286,15 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
 .lang-btn:hover { border-color: var(--yellow); color: var(--yellow); }
 @media (max-width: 480px) { .nav-rez { display: none; } }
 
+/* ---------- Review-t në Google ---------- */
+.rev-sec { padding-block: 44px; background: var(--card); border-block: 1px solid var(--line); }
+.rev-in { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px 28px; }
+.rev-stars { font-size: 34px; letter-spacing: 4px; color: var(--yellow); text-shadow: 0 1px 0 #c79400; line-height: 1; }
+.rev-txt h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; text-transform: uppercase; }
+.rev-txt p { margin: 6px 0 0; color: var(--muted); max-width: 40em; }
+.rev-btn { white-space: nowrap; }
+@media (max-width: 760px) { .rev-in { grid-template-columns: 1fr; } .rev-btn { justify-self: start; } }
+
 </style>
 </head>
 <body>
@@ -352,6 +361,20 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
         <li><h3>Ne e konfirmojmë</h3><p>Të kthejmë mesazh sapo ta aprovojmë. Statusin e sheh kurdo te "Rezervimet e mia".</p></li>
         <li><h3>Merr makinën</h3><p>Eja te Autolarje Leli me letërnjoftim dhe patentë shoferi. Makina të pret e pastër.</p></li>
       </ol>
+    </div>
+  </section>
+
+  <section id="reviews" class="rev-sec">
+    <div class="wrap rev-in">
+      <div class="rev-stars" aria-hidden="true">★★★★★</div>
+      <div class="rev-txt">
+        <h2>Klientët na vlerësojnë në Google</h2>
+        <p>Lexo çfarë thonë klientët për makinat dhe shërbimin tonë. Nëse ke marrë makinë te ne, na lër edhe ti një vlerësim.</p>
+      </div>
+      <a class="btn btn-dark rev-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Rent%20A%20Car%20Leli%20Auto%20Larje%20Leli%20Prishtin%C3%AB" target="_blank" rel="noopener">
+        <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.4 5.7c4.3-4 6.9-9.9 6.9-17.1z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.4-5.7c-2.1 1.4-4.8 2.3-8.5 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>
+        <span>Lexo review-t në Google</span>
+      </a>
     </div>
   </section>
 
@@ -764,6 +787,11 @@ const TR = {
     "Sorry, the car wasn't available for these dates. Call us to find another date.",
   "Makina u kthye. Faleminderit që zgjodhët Rent A Car Leli!": "Car returned. Thank you for choosing Rent A Car Leli!",
   "Rezervimet e mia · Rent A Car Leli": "My bookings · Rent A Car Leli",
+  // Review-t
+  "Klientët na vlerësojnë në Google": "Our customers rate us on Google",
+  "Lexo çfarë thonë klientët për makinat dhe shërbimin tonë. Nëse ke marrë makinë te ne, na lër edhe ti një vlerësim.":
+    "Read what customers say about our cars and service. If you've rented from us, leave a review too.",
+  "Lexo review-t në Google": "Read our Google reviews",
   // Tekste me vlera
   "Kursen {x}€": "Save {x}€",
   "Rezervo për {d}": "Book for {d}",
