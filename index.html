@@ -295,6 +295,15 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
 .rev-btn { white-space: nowrap; }
 @media (max-width: 760px) { .rev-in { grid-template-columns: 1fr; } .rev-btn { justify-self: start; } }
 
+/* ---------- Dritarja e review-t ---------- */
+.rev-dlg { width: min(420px, calc(100vw - 32px)); position: fixed; }
+.rev-x { position: absolute; top: 8px; right: 10px; background: none; border: 0; font-size: 28px; line-height: 1; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+.rev-body { padding: 30px 24px 22px; display: grid; gap: 12px; justify-items: center; text-align: center; }
+.rev-big { font-size: 38px; letter-spacing: 4px; color: var(--yellow); text-shadow: 0 1px 0 #c79400; line-height: 1; }
+.rev-body h3 { font-size: 30px; text-transform: uppercase; }
+.rev-body p { margin: 0; color: #3c434c; }
+.rev-no { background: none; border: 0; color: var(--muted); font: 600 14px var(--body); cursor: pointer; text-decoration: underline; padding: 6px; }
+
 </style>
 </head>
 <body>
@@ -453,6 +462,8 @@ const BIZNESI = {
   emri: "Rent A Car Leli",
   lokacioni: "Te Autolarje Leli",
   hartaLink: "https://share.google/XmGibrxjUK9DVoWyP",
+  // Linku ku klienti lë review në Google (Google Business → "Ask for reviews" → kopjo linkun)
+  reviewLink: "https://www.google.com/maps/search/?api=1&query=Rent%20A%20Car%20Leli%20Auto%20Larje%20Leli%20Prishtin%C3%AB",
   telefoni1: "044 296 791",
   telefoni2: "049 636 556",
 };
@@ -792,6 +803,11 @@ const TR = {
   "Lexo çfarë thonë klientët për makinat dhe shërbimin tonë. Nëse ke marrë makinë te ne, na lër edhe ti një vlerësim.":
     "Read what customers say about our cars and service. If you've rented from us, leave a review too.",
   "Lexo review-t në Google": "Read our Google reviews",
+  "Si ishte përvoja jote?": "How was your experience?",
+  "Lër një review në Google": "Leave a Google review",
+  "Jo, faleminderit": "No, thanks",
+  "Faleminderit {emri} që udhëtove me {car}! Nëse ishe i kënaqur, një review i shkurtër në Google na ndihmon shumë. Merr vetëm 30 sekonda.":
+    "Thanks {emri} for driving with {car}! If you enjoyed it, a short Google review helps us a lot. It only takes 30 seconds.",
   // Tekste me vlera
   "Kursen {x}€": "Save {x}€",
   "Rezervo për {d}": "Book for {d}",
@@ -1352,6 +1368,57 @@ const AuthUI = (() => {
 
 </script>
 <script>
+// ============================================================
+//  Kërkesa për review pasi makina kthehet (statusi "Përfunduar")
+//  Del vetëm një herë për çdo rezervim; klienti mund ta mbyllë.
+// ============================================================
+const ReviewPrompt = (() => {
+  const KEY = "leli_review_done";
+  function lexo() { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { return []; } }
+  function shenoje(id) {
+    try { const a = lexo(); if (!a.includes(id)) a.push(id); localStorage.setItem(KEY, JSON.stringify(a.slice(-50))); } catch {}
+  }
+  let dlg = null, aktiv = null;
+  function krijo() {
+    if (dlg) return;
+    document.body.insertAdjacentHTML("beforeend", `
+    <dialog id="rev-dlg" class="rev-dlg" aria-labelledby="rev-title">
+      <button class="rev-x" type="button" id="rev-x" aria-label="${t("Mbyll")}">×</button>
+      <div class="rev-body">
+        <div class="rev-big" aria-hidden="true">★★★★★</div>
+        <h3 id="rev-title">${t("Si ishte përvoja jote?")}</h3>
+        <p id="rev-msg"></p>
+        <a class="btn btn-y btn-full" id="rev-go" target="_blank" rel="noopener" href="${BIZNESI.reviewLink}">
+          <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.4 5.7c4.3-4 6.9-9.9 6.9-17.1z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.4-5.7c-2.1 1.4-4.8 2.3-8.5 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>
+          <span>${t("Lër një review në Google")}</span>
+        </a>
+        <button class="rev-no" type="button" id="rev-no">${t("Jo, faleminderit")}</button>
+      </div>
+    </dialog>`);
+    dlg = document.getElementById("rev-dlg");
+    const mbyll = () => { if (aktiv) shenoje(aktiv); aktiv = null; dlg.close(); };
+    document.getElementById("rev-x").addEventListener("click", mbyll);
+    document.getElementById("rev-no").addEventListener("click", mbyll);
+    document.getElementById("rev-go").addEventListener("click", () => setTimeout(mbyll, 300));
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) mbyll(); });
+  }
+  function check(list) {
+    const bere = lexo();
+    const b = (list || []).find((x) => x.status === "completed" && !bere.includes(x.id));
+    if (!b) return;
+    // Mos e shfaq mbi një dritare tjetër të hapur
+    if (document.querySelector("dialog[open]")) return;
+    krijo();
+    aktiv = b.id;
+    const emri = (b.emri || "").split(" ")[0];
+    document.getElementById("rev-msg").textContent = t("Faleminderit {emri} që udhëtove me {car}! Nëse ishe i kënaqur, një review i shkurtër në Google na ndihmon shumë. Merr vetëm 30 sekonda.", { emri, car: b.carName });
+    if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+  }
+  return { check };
+})();
+
+</script>
+<script>
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -1600,7 +1667,7 @@ AuthUI.onUser((u) => {
   unsubMine(); unsubMine = () => {};
   if (u) {
     if (!$("#f-emri").value) $("#f-emri").value = u.displayName || "";
-    unsubMine = api.klient.watchMine(u.uid, renderStrip);
+    unsubMine = api.klient.watchMine(u.uid, (l) => { renderStrip(l); ReviewPrompt.check(l); });
   } else renderStrip([]);
 });
 
