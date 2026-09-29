@@ -131,7 +131,7 @@ section { padding-block: 72px; }
 .head p { color: var(--muted); max-width: 30em; margin: 0; }
 
 /* ---------- Car cards ---------- */
-.cars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.cars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 @media (max-width: 980px) { .cars { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .cars { grid-template-columns: 1fr; } .hero .wrap { grid-template-columns: 1fr; } }
 @media (max-width: 900px) and (min-width: 641px) { .hero .wrap { grid-template-columns: 1fr; } .placard { max-width: 460px; } }
@@ -534,6 +534,26 @@ const MAKINAT = [
       "Karburanti": "Naftë",
       "Transmisioni": "Automatik",
       "Bagazhi": "377 L",
+      "Klima": "Po",
+    },
+  },
+  {
+    id: "polo",
+    emri: "VW Polo",
+    viti: 2016,
+    etiketa: "Gri · Sunroof",
+    ngjyra: "#5E6168",
+    ngjyraEmri: "Gri",
+    forma: "small",
+    foto: "img/makinat/polo.jpg",
+    pershkrimi:
+      "E vogël, e lehtë për t'u drejtuar dhe shumë ekonomike me naftë. Me sunroof për më shumë dritë dhe ajër. E përshtatshme për qytet dhe për rrugë më të gjata.",
+    specifikat: {
+      "Ulëse": "5",
+      "Dyer": "5",
+      "Karburanti": "Naftë",
+      "Transmisioni": "Automatik",
+      "Bagazhi": "280 L",
       "Klima": "Po",
     },
   },
