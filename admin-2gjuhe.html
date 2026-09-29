@@ -1,0 +1,1243 @@
+<!doctype html>
+<html lang="sq">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="/admin.webmanifest">
+<meta name="theme-color" content="#15181C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Leli Admin">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Paneli · Rent A Car Leli</title>
+<link rel="icon" href="/favicon.png" type="image/png" sizes="192x192">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --ink: #15181c;
+  --ink-2: #23272d;
+  --paper: #f3f4f1;
+  --card: #ffffff;
+  --line: #d9dcd5;
+  --muted: #5b636e;
+  --text: #1a1d21;
+  --yellow: #f5b700;
+  --yellow-soft: #fff4cc;
+  --ok: #1d7a4c;
+  --ok-soft: #e3f3ea;
+  --warn: #a4640b;
+  --warn-soft: #fdf0d9;
+  --bad: #b42318;
+  --bad-soft: #fbe6e4;
+  --radius: 10px;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Barlow", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font: 400 16px/1.55 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: .005em; }
+.wrap { width: 100%; max-width: 1140px; margin: 0 auto; padding-inline: 20px; }
+.num { font-variant-numeric: tabular-nums; }
+.eyebrow { font: 600 13px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+/* ---------- Header ---------- */
+.top {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--ink); color: #fff;
+  border-bottom: 1px solid #000;
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand svg { width: 44px; height: 44px; flex: none; }
+.brand-txt { display: grid; line-height: 1; }
+.brand-txt small { font: 600 11px/1 var(--body); letter-spacing: .22em; color: #c9ccd1; }
+.brand-txt b { font: 800 26px/1 var(--display); letter-spacing: .02em; }
+.brand-txt b span { color: var(--yellow); }
+.nav { display: flex; align-items: center; gap: 22px; font-weight: 500; }
+.nav a { text-decoration: none; color: #d8dbe0; }
+.nav a:hover { color: #fff; }
+.nav .tel { display: none; }
+@media (max-width: 760px) { .nav > a:not(.btn) { display: none; } .nav { gap: 10px; } }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font: 700 15px/1 var(--body); letter-spacing: .02em;
+  padding: 13px 20px; border-radius: 8px; border: 2px solid transparent;
+  cursor: pointer; text-decoration: none; transition: transform .12s, background .15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn-y { background: var(--yellow); color: #1b1400; }
+.btn-y:hover { background: #ffc61a; }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { background: var(--ink-2); }
+.btn-line { background: transparent; border-color: currentColor; }
+.btn-sm { padding: 9px 14px; font-size: 14px; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.btn-ok { background: var(--ok); color: #fff; }
+.btn-bad { background: #fff; color: var(--bad); border-color: #e7b7b2; }
+
+/* ---------- Hero ---------- */
+.hero { background: var(--ink); color: #fff; position: relative; overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: 1.25fr .9fr; gap: 48px; padding-block: 64px 88px; align-items: center; }
+.hero h1 { font-size: clamp(44px, 7vw, 84px); font-weight: 800; text-transform: uppercase; }
+.hero h1 em { font-style: normal; color: var(--yellow); }
+.hero p { color: #c8ccd2; font-size: 18px; max-width: 34em; margin: 20px 0 28px; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-cta .btn-line { color: #fff; }
+.road {
+  position: absolute; left: 0; right: 0; bottom: 26px; height: 6px;
+  background: repeating-linear-gradient(90deg, var(--yellow) 0 56px, transparent 56px 96px);
+  opacity: .9;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .road { animation: road 2.4s linear infinite; }
+  @keyframes road { to { background-position: -96px 0; } }
+}
+
+/* Price placard */
+.placard {
+  background: var(--yellow); color: #1b1400; border-radius: 14px;
+  padding: 26px 26px 20px; border: 4px solid #1b1400;
+  box-shadow: 0 0 0 4px var(--yellow), 0 24px 50px rgba(0,0,0,.35);
+}
+.placard h2 { font-size: 22px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+.tier { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 2px solid rgba(27,20,0,.2); }
+.tier span { font-weight: 600; font-size: 17px; }
+.tier b { font: 800 44px/1 var(--display); }
+.tier b small { font: 600 15px var(--body); margin-left: 2px; }
+.placard p { margin: 10px 0 0; font-size: 13px; font-weight: 500; color: #3d3100; }
+
+/* ---------- Sections ---------- */
+section { padding-block: 72px; }
+.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; margin-bottom: 32px; }
+.head h2 { font-size: clamp(34px, 5vw, 52px); font-weight: 800; text-transform: uppercase; margin-top: 8px; }
+.head p { color: var(--muted); max-width: 30em; margin: 0; }
+
+/* ---------- Car cards ---------- */
+.cars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+@media (max-width: 980px) { .cars { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .cars { grid-template-columns: 1fr; } .hero .wrap { grid-template-columns: 1fr; } }
+@media (max-width: 900px) and (min-width: 641px) { .hero .wrap { grid-template-columns: 1fr; } .placard { max-width: 460px; } }
+.car { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.car-img { position: relative; aspect-ratio: 16 / 10; background: linear-gradient(180deg, #eceee9, #dfe2dc); display: grid; place-items: center; }
+.car-img img { width: 100%; height: 100%; object-fit: cover; }
+.car-img svg { width: 88%; }
+.car-year { position: absolute; top: 12px; left: 12px; background: var(--ink); color: #fff; font: 700 13px/1 var(--body); padding: 7px 10px; border-radius: 6px; }
+.pill { display: inline-flex; align-items: center; gap: 7px; font: 700 13px/1 var(--body); padding: 7px 11px; border-radius: 999px; }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.car-img .pill { position: absolute; top: 12px; right: 12px; }
+.car-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.car-title { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.car-title h3 { font-size: 30px; font-weight: 700; text-transform: uppercase; }
+.car-title span { color: var(--muted); font-weight: 600; font-size: 14px; white-space: nowrap; }
+.car-body p { margin: 0; color: #3c434c; font-size: 15px; }
+.specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin: 0; }
+.specs div { background: #fafbf8; padding: 9px 10px; }
+.specs dt { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.specs dd { margin: 2px 0 0; font-weight: 600; font-size: 14px; }
+.busy { font-size: 13px; color: var(--muted); margin: 0; }
+.busy b { color: var(--bad); font-weight: 600; }
+.car-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 4px; }
+.from { line-height: 1.1; }
+.from small { display: block; font-size: 12px; color: var(--muted); }
+.from b { font: 800 32px/1 var(--display); }
+
+/* ---------- Steps ---------- */
+.steps-sec { background: #e8eae4; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: s; list-style: none; padding: 0; margin: 0; }
+@media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+.steps li { counter-increment: s; padding-top: 18px; border-top: 3px solid var(--ink); }
+.steps li::before { content: counter(s); font: 800 44px/1 var(--display); color: var(--yellow); -webkit-text-stroke: 1.5px var(--ink); }
+.steps h3 { font-size: 24px; text-transform: uppercase; margin: 10px 0 6px; }
+.steps p { margin: 0; color: #3c434c; }
+
+/* ---------- Contact ---------- */
+.contact { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 760px) { .contact { grid-template-columns: 1fr; } }
+.box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 26px; }
+.box h3 { font-size: 26px; text-transform: uppercase; margin-bottom: 10px; }
+.phone { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.phone b { font: 700 30px/1 var(--display); letter-spacing: .02em; }
+.phone small { display: block; color: var(--muted); font-size: 13px; }
+.phone .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.map-box { background: var(--ink); color: #fff; border: 0; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; }
+.map-box p { color: #c8ccd2; margin: 0; }
+.map-grid { position: absolute; inset: 0; opacity: .12; background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 28px 28px; pointer-events: none; }
+.pin { width: 54px; height: 54px; }
+.map-box > * { position: relative; }
+.map-box .btn { align-self: flex-start; margin-top: auto; }
+
+footer { background: var(--ink); color: #9ea4ad; padding-block: 28px; font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+footer a { color: #9ea4ad; }
+
+/* ---------- Dialog / forms ---------- */
+dialog { border: 0; padding: 0; border-radius: 16px; width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px); background: var(--card); color: var(--text); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+dialog::backdrop { background: rgba(10,12,15,.6); }
+.dlg-head { display: flex; align-items: center; gap: 14px; padding: 18px 20px; background: var(--ink); color: #fff; }
+.dlg-head .mini { width: 92px; flex: none; background: #2a2f36; border-radius: 8px; padding: 4px; }
+.dlg-head h3 { font-size: 26px; text-transform: uppercase; }
+.dlg-head small { color: #b9bec6; }
+.x { margin-left: auto; background: transparent; border: 0; color: #fff; font-size: 28px; line-height: 1; cursor: pointer; padding: 4px 8px; }
+.dlg-body { padding: 20px; display: grid; gap: 14px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 460px) { .row2 { grid-template-columns: 1fr; } }
+label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+.f input, .f select, .f textarea {
+  font: 400 16px var(--body); padding: 11px 12px; border: 1.5px solid var(--line); border-radius: 8px; background: #fff; color: var(--text); width: 100%;
+}
+.f input:focus, .f select:focus, .f textarea:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px var(--yellow-soft); }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+.check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--ink); }
+.sum { background: var(--yellow-soft); border: 1.5px solid #f0d77a; border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; }
+.sum .l { display: flex; justify-content: space-between; font-size: 15px; }
+.sum .t { display: flex; justify-content: space-between; align-items: baseline; border-top: 1.5px dashed #d9bd55; padding-top: 8px; margin-top: 4px; }
+.sum .t b { font: 800 34px/1 var(--display); }
+.err { color: var(--bad); background: var(--bad-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 500; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.done { text-align: center; padding: 30px 22px; display: grid; gap: 12px; justify-items: center; }
+.done .ic { width: 64px; height: 64px; border-radius: 50%; background: var(--warn-soft); color: var(--warn); display: grid; place-items: center; font: 800 34px var(--display); }
+.code { font: 700 15px ui-monospace, Menlo, Consolas, monospace; background: #f1f2ef; padding: 8px 12px; border-radius: 6px; word-break: break-all; }
+
+.demo-bar { background: var(--yellow); color: #1b1400; font-size: 14px; font-weight: 600; text-align: center; padding: 8px 16px; }
+
+/* ---------- Kalkulatori i çmimit në kartelë ---------- */
+.calc { margin-top: auto; background: #f6f7f3; border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 12px; }
+.calc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.calc-lbl { font-weight: 700; font-size: 14px; }
+.stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--ink); border-radius: 8px; overflow: hidden; background: #fff; }
+.stepper button { width: 38px; height: 38px; border: 0; background: #fff; font: 700 20px/1 var(--body); cursor: pointer; color: var(--text); }
+.stepper button:hover:not([disabled]) { background: var(--yellow-soft); }
+.stepper button[disabled] { color: #c3c7cc; cursor: not-allowed; }
+.stepper output { min-width: 70px; text-align: center; font-weight: 700; border-inline: 1.5px solid var(--line); line-height: 38px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 11px; font: 600 13px var(--body); cursor: pointer; color: var(--text); }
+.chip:hover { border-color: var(--ink); }
+.chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.calc-total { display: flex; justify-content: space-between; align-items: end; gap: 10px; border-top: 1.5px dashed var(--line); padding-top: 10px; }
+.calc-total span { color: var(--muted); font-size: 14px; font-weight: 600; display: block; }
+.calc-total em { font-style: normal; font-size: 12px; font-weight: 700; color: var(--ok); background: var(--ok-soft); padding: 3px 8px; border-radius: 999px; display: inline-block; margin-top: 4px; }
+.calc-total b { font: 800 40px/1 var(--display); }
+.btn-full { width: 100%; }
+.dlg-head .mini img { border-radius: 6px; aspect-ratio: 16/10; object-fit: cover; width: 100%; }
+
+/* ---------- Llogaria e klientit ---------- */
+.acct { display: inline-flex; align-items: center; }
+.acct-in { color: #fff; }
+.acct-chip { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; padding: 5px 12px 5px 5px; border: 1.5px solid #3a4048; border-radius: 999px; position: relative; }
+.acct-chip:hover { border-color: var(--yellow); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); color: #1b1400; display: grid; place-items: center; font: 800 17px/1 var(--display); flex: none; }
+.acct-txt { display: grid; line-height: 1.1; }
+.acct-txt small { font-size: 11px; color: #b9bec6; }
+.acct-txt b { font-size: 14px; max-width: 12ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.acct-badge { position: absolute; top: -6px; left: 24px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: #e5484d; color: #fff; font: 700 12px/20px var(--body); text-align: center; border: 2px solid var(--ink); }
+@media (max-width: 560px) { .acct-txt { display: none; } .acct-chip { padding: 4px; } }
+@media (max-width: 380px) { .nav-rez { display: none; } }
+
+.my-strip { padding-block: 0; background: var(--yellow-soft); border-bottom: 1px solid #efd98a; }
+.strip-in { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 14px 18px; padding-block: 12px; }
+.strip-img { width: 88px; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; background: #e6e2cf; }
+.strip-img img { width: 100%; height: 100%; object-fit: cover; }
+.strip-main { display: grid; line-height: 1.25; }
+.strip-main small, .strip-st small { font-size: 12px; color: #6b5a1d; }
+.strip-main b { font: 700 22px/1.1 var(--display); text-transform: uppercase; }
+.strip-main span { font-size: 14px; font-weight: 600; }
+.strip-st { display: grid; gap: 4px; justify-items: start; max-width: 26ch; }
+@media (max-width: 760px) {
+  .strip-in { grid-template-columns: auto 1fr; }
+  .strip-st { grid-column: 1 / -1; max-width: none; grid-auto-flow: column; align-items: center; justify-content: start; gap: 10px; }
+  .strip-in > .btn { grid-column: 1 / -1; }
+}
+
+.auth-dlg { width: min(430px, calc(100vw - 32px)); }
+.auth-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: var(--ink); color: #fff; }
+.auth-head h3 { font-size: 26px; text-transform: uppercase; }
+.auth-head small { color: #b9bec6; font-size: 13px; }
+.auth-body { padding: 18px; display: grid; gap: 14px; }
+.auth-body form { display: grid; gap: 12px; }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; background: #eef0ec; border-radius: 10px; padding: 4px; }
+.auth-tabs button { border: 0; background: transparent; padding: 10px; border-radius: 8px; font: 700 15px var(--body); cursor: pointer; color: var(--muted); }
+.auth-tabs button[aria-selected="true"] { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.gbtn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border: 1.5px solid #cfd3cc; border-radius: 8px; background: #fff; font: 600 15px var(--body); color: #1f1f1f; cursor: pointer; }
+.gbtn:hover { background: #f6f7f5; }
+.gbtn[disabled] { opacity: .5; cursor: wait; }
+.or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.lnk-btn { background: none; border: 0; padding: 0; color: #2d5bd1; font: 600 13px var(--body); cursor: pointer; justify-self: start; text-decoration: underline; }
+.okmsg { color: var(--ok); background: var(--ok-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 500; }
+
+/* ---------- Butoni i gjuhës ---------- */
+.lang-btn { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: #fff; border: 1.5px solid #3a4048; border-radius: 8px; padding: 8px 10px; font: 700 13px/1 var(--body); letter-spacing: .04em; cursor: pointer; }
+.lang-btn:hover { border-color: var(--yellow); color: var(--yellow); }
+@media (max-width: 480px) { .nav-rez { display: none; } }
+
+/* ---------- Review-t në Google ---------- */
+.rev-sec { padding-block: 44px; background: var(--card); border-block: 1px solid var(--line); }
+.rev-in { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px 28px; }
+.rev-stars { font-size: 34px; letter-spacing: 4px; color: var(--yellow); text-shadow: 0 1px 0 #c79400; line-height: 1; }
+.rev-txt h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; text-transform: uppercase; }
+.rev-txt p { margin: 6px 0 0; color: var(--muted); max-width: 40em; }
+.rev-btn { white-space: nowrap; }
+@media (max-width: 760px) { .rev-in { grid-template-columns: 1fr; } .rev-btn { justify-self: start; } }
+
+/* ---------- Dritarja e review-t ---------- */
+.rev-dlg { width: min(420px, calc(100vw - 32px)); position: fixed; }
+.rev-x { position: absolute; top: 8px; right: 10px; background: none; border: 0; font-size: 28px; line-height: 1; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+.rev-body { padding: 30px 24px 22px; display: grid; gap: 12px; justify-items: center; text-align: center; }
+.rev-big { font-size: 38px; letter-spacing: 4px; color: var(--yellow); text-shadow: 0 1px 0 #c79400; line-height: 1; }
+.rev-body h3 { font-size: 30px; text-transform: uppercase; }
+.rev-body p { margin: 0; color: #3c434c; }
+.rev-no { background: none; border: 0; color: var(--muted); font: 600 14px var(--body); cursor: pointer; text-decoration: underline; padding: 6px; }
+
+</style>
+<style>
+  .login { max-width: 400px; margin: 64px auto; }
+  .login form { display: grid; gap: 14px; }
+  .adm { padding-block: 28px 64px; display: grid; gap: 28px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .stat b { display: block; font: 800 40px/1 var(--display); margin-top: 6px; }
+  .stat.hot { background: var(--yellow); border-color: #d9a200; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 2px solid var(--line); }
+  .tab { background: none; border: 0; font: 700 15px var(--body); padding: 10px 14px; cursor: pointer; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .tab[aria-selected="true"] { color: var(--text); border-color: var(--ink); }
+  .tab .c { display: inline-block; min-width: 22px; padding: 2px 6px; border-radius: 999px; background: var(--line); font-size: 12px; margin-left: 4px; text-align: center; }
+  .tab .c.hot { background: var(--yellow); color: #1b1400; }
+  .list { display: grid; gap: 12px; }
+  .bk { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; grid-template-columns: 1fr auto; gap: 12px 20px; border-left: 6px solid var(--line); }
+  .bk.pending { border-left-color: var(--yellow); }
+  .bk.approved { border-left-color: var(--ok); }
+  .bk.rejected, .bk.cancelled { border-left-color: var(--bad); opacity: .8; }
+  .bk.completed { opacity: .7; }
+  @media (max-width: 700px) { .bk { grid-template-columns: 1fr; } }
+  .bk h3 { font-size: 24px; text-transform: uppercase; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 8px; font-size: 15px; }
+  .meta span { color: var(--muted); }
+  .meta b { color: var(--text); font-weight: 600; }
+  .bk .note-txt { margin: 8px 0 0; font-size: 14px; background: #f5f6f2; padding: 8px 10px; border-radius: 6px; }
+  .acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; align-content: center; }
+  @media (max-width: 700px) { .acts { justify-content: flex-start; } }
+  .tot { font: 800 30px/1 var(--display); text-align: right; }
+  .empty { text-align: center; padding: 36px; color: var(--muted); background: var(--card); border: 1px dashed var(--line); border-radius: 12px; }
+  .cal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 860px) { .cal { grid-template-columns: 1fr; } }
+  .cal .box { padding: 18px; }
+  .cal h3 { font-size: 22px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .blk { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; }
+  .blk small { color: var(--muted); display: block; }
+  .lnk { background: none; border: 0; color: var(--bad); font: 600 13px var(--body); cursor: pointer; padding: 4px; text-decoration: underline; }
+  .manual { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.4fr auto; gap: 10px; align-items: end; }
+  @media (max-width: 860px) { .manual { grid-template-columns: 1fr 1fr; } }
+  .msg { white-space: pre-wrap; background: #f5f6f2; border: 1px solid var(--line); border-radius: 10px; padding: 14px; font-size: 15px; margin: 0; }
+  .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 10px; font-weight: 600; z-index: 50; }
+</style>
+</head>
+<body>
+<div id="demo-bar" class="demo-bar" hidden>Modalitet DEMO · fjalëkalimi: <b>demo</b> · të dhënat ruhen vetëm në këtë shfletues.</div>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Rent A Car Leli">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#F5B700"/><path d="M8 38.5V33.2c0-2.1 1.4-3.6 3.5-4l7.3-1.2 6.4-6.6c1.1-1.1 2.5-1.7 4-1.7h12.6c1.8 0 3.4.9 4.4 2.3l4.2 5.8 3.4.7c2.3.5 3.7 2.1 3.7 4.4v5.4c0 .8-.6 1.4-1.4 1.4H9.4c-.8 0-1.4-.6-1.4-1.4z" fill="#15181C"/><path d="M23.6 28 29 22.6c.5-.5 1.1-.7 1.8-.7h3.7V28z" fill="#F5B700"/><path d="M37.2 21.9h5.4c.8 0 1.5.4 2 1l3.7 5.1H37.2z" fill="#F5B700"/><circle cx="19.5" cy="39.5" r="6.2" fill="#15181C" stroke="#F5B700" stroke-width="2"/><circle cx="19.5" cy="39.5" r="2.2" fill="#F5B700"/><circle cx="45" cy="39.5" r="6.2" fill="#15181C" stroke="#F5B700" stroke-width="2"/><circle cx="45" cy="39.5" r="2.2" fill="#F5B700"/><rect x="51.5" y="31" width="4" height="2.4" rx="1.2" fill="#fff"/><path d="M8 51h48" stroke="#15181C" stroke-width="4" stroke-linecap="round"/><path d="M11 51h6M23 51h6M35 51h6M47 51h6" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span class="brand-txt"><small>PANELI ADMIN</small><b>LEL<span>I</span></b></span>
+    </a>
+    <nav class="nav"><button class="btn btn-line btn-sm" id="logout" style="color:#fff" hidden>Dil</button></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="login" class="login box" hidden>
+    <h3>Hyr në panel</h3>
+    <button type="button" class="gbtn" id="l-google" style="margin-bottom:14px"><svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.4 5.7c4.3-4 6.9-9.9 6.9-17.1z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.4-5.7c-2.1 1.4-4.8 2.3-8.5 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg><span>Hyr me Google</span></button>
+    <div class="or" style="margin-bottom:14px"><span>ose me email</span></div>
+    <form id="login-f">
+      <label class="f">Emaili<input type="email" id="l-email" autocomplete="username" required></label>
+      <label class="f">Fjalëkalimi<input type="password" id="l-pw" autocomplete="current-password" required></label>
+      <div class="err" id="l-err" hidden></div>
+      <button class="btn btn-y" type="submit">Hyr</button>
+    </form>
+  </div>
+
+  <div id="panel" class="adm" hidden>
+    <div class="stats">
+      <div class="stat" id="s-pending"><span class="eyebrow">Në pritje</span><b class="num">0</b></div>
+      <div class="stat" id="s-active"><span class="eyebrow">Aprovuar (aktive)</span><b class="num">0</b></div>
+      <div class="stat" id="s-free"><span class="eyebrow">Makina të lira sot</span><b class="num">0/3</b></div>
+    </div>
+
+    <div>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" data-tab="pending" aria-selected="true">Në pritje<span class="c" id="c-pending">0</span></button>
+        <button class="tab" role="tab" data-tab="approved" aria-selected="false">Aprovuar<span class="c" id="c-approved">0</span></button>
+        <button class="tab" role="tab" data-tab="all" aria-selected="false">Të gjitha<span class="c" id="c-all">0</span></button>
+      </div>
+      <div class="list" id="list" style="margin-top:16px"></div>
+    </div>
+
+    <div>
+      <div class="head" style="margin-bottom:14px"><div><p class="eyebrow">Kalendari</p><h2 style="font-size:36px">Kur janë të zëna makinat</h2></div></div>
+      <div class="cal" id="cal"></div>
+      <form class="box manual" id="manual" style="margin-top:14px">
+        <label class="f">Makina<select id="m-car"></select></label>
+        <label class="f">Nga<input type="date" id="m-nga" required></label>
+        <label class="f">Deri<input type="date" id="m-deri" required></label>
+        <label class="f">Shënim<input type="text" id="m-shenim" placeholder="P.sh. klient në telefon, servis" maxlength="80"></label>
+        <button class="btn btn-dark" type="submit">Shëno të zënë</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<dialog id="msg-dlg" aria-labelledby="msg-title">
+  <div class="dlg-head"><div><h3 id="msg-title">Dërgo mesazh klientit</h3><small id="msg-sub"></small></div><button class="x" type="button" id="msg-x" aria-label="Mbyll">×</button></div>
+  <div class="dlg-body">
+    <pre class="msg" id="msg-txt"></pre>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <a class="btn btn-ok" id="msg-wa" target="_blank" rel="noopener">Dërgo në WhatsApp</a>
+      <a class="btn btn-dark" id="msg-sms">Dërgo SMS</a>
+      <a class="btn btn-line" id="msg-viber">Hap Viber</a>
+      <button class="btn btn-line" type="button" id="msg-copy">Kopjo mesazhin</button>
+    </div>
+    <p class="note">Mesazhi hapet i shkruar gati në WhatsApp/SMS. Ti vetëm shtyp "Send". Për Viber: kopjo mesazhin, pastaj ngjite në bisedë. Klienti e sheh statusin edhe te faqja "Rezervimi im".</p>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" hidden></div>
+<script>
+// ============================================================
+//  RENT A CAR LELI — CILËSIMET KRYESORE
+//  Këtu ndryshon numrat, çmimet, lokacionin dhe Firebase.
+// ============================================================
+
+const BIZNESI = {
+  emri: "Rent A Car Leli",
+  lokacioni: "Te Autolarje Leli",
+  hartaLink: "https://share.google/XmGibrxjUK9DVoWyP",
+  // Linku ku klienti lë review në Google (Google Business → "Ask for reviews" → kopjo linkun)
+  reviewLink: "https://www.google.com/maps/search/?api=1&query=Rent%20A%20Car%20Leli%20Auto%20Larje%20Leli%20Prishtin%C3%AB",
+  telefoni1: "044 296 791",
+  telefoni2: "049 636 556",
+};
+
+// Çmimi për ditë sipas numrit të ditëve
+//  1 ditë  -> 40€ / ditë
+//  2 ditë  -> 35€ / ditë
+//  3+ ditë -> 30€ / ditë
+const CMIMET = [
+  { ngaDite: 3, cmimi: 30 },
+  { ngaDite: 2, cmimi: 35 },
+  { ngaDite: 1, cmimi: 40 },
+];
+
+// Emailat që kanë qasje në panelin admin (të njëjtët si te firestore.rules)
+const ADMIN_EMAILS = ["dijar1raqi@gmail.com", "blerimfraqi@gmail.com"];
+
+// Kopjo këtu të dhënat nga Firebase Console → Project settings → Your apps → Web app.
+// Derisa të mos i vendosësh, faqja punon në "MODALITET DEMO" (të dhënat ruhen vetëm në këtë shfletues).
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyB5JeqMNVLP9fSfUvodwBKGkcqMHwU2yIs",
+  authDomain: "rentacar-leli.firebaseapp.com",
+  projectId: "rentacar-leli",
+  storageBucket: "rentacar-leli.firebasestorage.app",
+  messagingSenderId: "392721031632",
+  appId: "1:392721031632:web:19eddda6a84582aaa159d5",
+};
+
+// Njoftimet në telefon me aplikacionin falas "ntfy" (abonohu te ky emër)
+const NTFY_TOPIC = "leli-rez-g72l2f2libnge1";
+
+const DEMO = FIREBASE_CONFIG.apiKey.startsWith("VENDOS");
+
+</script>
+<script>
+// ============================================================
+//  MAKINAT — ndrysho të dhënat këtu.
+//  Foto: vendos foto reale në img/makinat/ me emrat astra.jpg, corsa.jpg, captur.jpg
+//  Derisa të mos ketë foto, shfaqet një ilustrim me ngjyrën e makinës.
+// ============================================================
+
+const MAKINAT = [
+  {
+    id: "astra",
+    emri: "Opel Astra K",
+    viti: 2022,
+    etiketa: "E bardhë",
+    ngjyra: "#E9ECEF",
+    ngjyraEmri: "E bardhë",
+    forma: "hatch",
+    foto: "img/makinat/astra.jpg",
+    pershkrimi:
+      "Modeli më i ri në flotë. Komode për rrugë të gjata, e qetë në autostradë dhe me konsum të ulët. Zgjedhja e duhur për udhëtime familjare ose pune.",
+    specifikat: {
+      "Ulëse": "5",
+      "Dyer": "5",
+      "Karburanti": "Naftë",
+      "Transmisioni": "Automatik",
+      "Bagazhi": "370 L",
+      "Klima": "Po",
+    },
+  },
+  {
+    id: "corsa",
+    emri: "Opel Corsa E",
+    viti: 2017,
+    etiketa: "Argjendi",
+    ngjyra: "#B8BDC4",
+    ngjyraEmri: "Argjendi",
+    forma: "small",
+    foto: "img/makinat/corsa.jpg",
+    pershkrimi:
+      "E vogël, e lehtë për t'u parkuar dhe shumë ekonomike. Perfekte për qytet dhe për rrugë të shkurtra brenda Kosovës.",
+    specifikat: {
+      "Ulëse": "5",
+      "Dyer": "5",
+      "Karburanti": "Naftë",
+      "Transmisioni": "Automatik",
+      "Bagazhi": "285 L",
+      "Klima": "Po",
+    },
+  },
+  {
+    id: "captur",
+    emri: "Renault Captur",
+    viti: 2016,
+    etiketa: "E kuqe · çati e zezë",
+    ngjyra: "#C1272D",
+    ngjyraEmri: "E kuqe",
+    forma: "suv",
+    foto: "img/makinat/captur.jpg",
+    pershkrimi:
+      "Crossover me pozicion të lartë ulje dhe pamje të mirë të rrugës. Hapësirë e bollshme për bagazhe dhe e sigurt edhe në rrugë malore.",
+    specifikat: {
+      "Ulëse": "5",
+      "Dyer": "5",
+      "Karburanti": "Naftë",
+      "Transmisioni": "Automatik",
+      "Bagazhi": "377 L",
+      "Klima": "Po",
+    },
+  },
+  {
+    id: "polo",
+    emri: "VW Polo",
+    viti: 2016,
+    etiketa: "Gri · Sunroof",
+    ngjyra: "#5E6168",
+    ngjyraEmri: "Gri",
+    forma: "small",
+    foto: "img/makinat/polo.jpg",
+    pershkrimi:
+      "E vogël, e lehtë për t'u drejtuar dhe shumë ekonomike me naftë. Me sunroof për më shumë dritë dhe ajër. E përshtatshme për qytet dhe për rrugë më të gjata.",
+    specifikat: {
+      "Ulëse": "5",
+      "Dyer": "5",
+      "Karburanti": "Naftë",
+      "Transmisioni": "Automatik",
+      "Bagazhi": "280 L",
+      "Klima": "Po",
+    },
+  },
+];
+
+function gjejMakinen(id) {
+  return MAKINAT.find((m) => m.id === id);
+}
+
+// Ilustrim anësor i makinës (përdoret kur nuk ka foto)
+function ilustrimi(makina) {
+  const c = makina.ngjyra;
+  const suv = makina.forma === "suv";
+  const small = makina.forma === "small";
+  const trupi = suv
+    ? "M24,128 L24,104 Q26,92 44,88 L108,78 Q138,48 172,40 L276,38 Q304,38 332,72 L366,80 Q380,84 380,100 L380,128 Z"
+    : small
+    ? "M40,132 L40,112 Q42,100 58,96 L118,86 Q146,58 178,50 L262,48 Q290,48 318,82 L350,90 Q362,94 362,108 L362,132 Z"
+    : "M22,132 L22,112 Q24,100 40,96 L110,86 Q140,58 175,48 L270,46 Q300,46 330,80 L368,88 Q382,92 382,108 L382,132 Z";
+  const xamiA = suv
+    ? "M118,78 Q144,54 174,47 L218,46 L220,78 Z"
+    : small
+    ? "M126,86 Q150,64 180,57 L216,56 L218,86 Z"
+    : "M120,86 Q146,62 176,55 L220,54 L222,86 Z";
+  const xamiB = suv
+    ? "M230,78 L228,46 L272,46 Q296,48 322,76 Z"
+    : small
+    ? "M228,86 L226,56 L260,56 Q282,58 306,84 Z"
+    : "M232,86 L230,54 L268,54 Q292,56 318,84 Z";
+  const r = suv ? 28 : small ? 23 : 25;
+  const wy = suv ? 128 : 132;
+  const w1 = suv ? 96 : small ? 102 : 95;
+  const w2 = suv ? 306 : small ? 298 : 305;
+  const rrota = (x) => `
+    <circle cx="${x}" cy="${wy}" r="${r + 4}" fill="#101215"/>
+    <circle cx="${x}" cy="${wy}" r="${r}" fill="#1C1F24"/>
+    <circle cx="${x}" cy="${wy}" r="${r * 0.62}" fill="#9AA1AB"/>
+    <circle cx="${x}" cy="${wy}" r="${r * 0.18}" fill="#50565F"/>`;
+  const front = suv ? 28 : small ? 44 : 26;
+  const back = suv ? 372 : small ? 354 : 374;
+  return `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${makina.emri}">
+    <ellipse cx="200" cy="${wy + r + 2}" rx="180" ry="8" fill="#000" opacity=".12"/>
+    <path d="${trupi}" fill="${c}"/>
+    <path d="${trupi}" fill="url(#shk-${makina.id})"/>
+    ${suv ? `<path d="M24,128 L24,116 L380,116 L380,128 Z" fill="#23262B"/>` : ""}
+    <path d="${xamiA}" fill="#1E2A36" opacity=".92"/>
+    <path d="${xamiB}" fill="#1E2A36" opacity=".92"/>
+    <line x1="226" y1="${suv ? 80 : 88}" x2="224" y2="${suv ? 114 : 124}" stroke="#000" stroke-opacity=".18" stroke-width="1.5"/>
+    <rect x="${front}" y="${suv ? 94 : 102}" width="16" height="7" rx="3" fill="#F4F1E6"/>
+    <rect x="${back - 12}" y="${suv ? 86 : 94}" width="10" height="9" rx="2" fill="#B3121B"/>
+    ${rrota(w1)}${rrota(w2)}
+    <defs><linearGradient id="shk-${makina.id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
+      <stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".22"/>
+    </linearGradient></defs>
+  </svg>`;
+}
+
+</script>
+<script>
+// ============================================================
+//  Shtresa e të dhënave: Firebase (kur është konfiguruar) ose DEMO (localStorage)
+// ============================================================
+
+// ---------- Llogaritja e çmimit ----------
+function dataNeDite(s) {
+  const [y, m, d] = s.split("-").map(Number);
+  return Date.UTC(y, m - 1, d) / 86400000;
+}
+function sot() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function shtoDite(s, n) {
+  const t = new Date((dataNeDite(s) + n) * 86400000);
+  return t.toISOString().slice(0, 10);
+}
+function numriDiteve(nga, deri) {
+  if (!nga || !deri) return 0;
+  const n = dataNeDite(deri) - dataNeDite(nga);
+  return n < 0 ? 0 : Math.max(1, n);
+}
+function cmimiDitor(dite) {
+  for (const c of CMIMET) if (dite >= c.ngaDite) return c.cmimi;
+  return CMIMET[CMIMET.length - 1].cmimi;
+}
+function totali(dite) {
+  return dite * cmimiDitor(dite);
+}
+// Intervali i zënë: [nga, deri) — nëse kthehet po atë ditë, zë 1 ditë
+function interval(nga, deri) {
+  const a = dataNeDite(nga);
+  return [a, Math.max(dataNeDite(deri), a + 1)];
+}
+function mbivendosen(a1, a2, b1, b2) {
+  const [x1, x2] = interval(a1, a2);
+  const [y1, y2] = interval(b1, b2);
+  return x1 < y2 && y1 < x2;
+}
+function formatoData(s) {
+  if (!s) return "";
+  const [y, m, d] = s.split("-");
+  return `${d}.${m}.${y}`;
+}
+
+// ---------- Numrat e telefonit (Kosovë) ----------
+function telNderkombetar(t) {
+  let n = String(t || "").replace(/[^\d+]/g, "");
+  if (n.startsWith("+")) return n.slice(1);
+  if (n.startsWith("00")) return n.slice(2);
+  if (n.startsWith("0")) return "383" + n.slice(1);
+  return n;
+}
+
+// ============================================================
+//  DEMO (localStorage) — punon vetëm në një shfletues, për provë
+// ============================================================
+const LS_B = "leli_demo_bookings";
+const LS_K = "leli_demo_blocks";
+const degjuesit = new Set();
+
+function lexo(k) {
+  try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch { return []; }
+}
+function shkruaj(k, v) {
+  try { localStorage.setItem(k, JSON.stringify(v)); } catch {}
+  degjuesit.forEach((f) => f());
+}
+try {
+  window.addEventListener("storage", () => degjuesit.forEach((f) => f()));
+} catch {}
+function degjo(f) {
+  degjuesit.add(f);
+  f();
+  return () => degjuesit.delete(f);
+}
+function idRastesishme() {
+  const c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+  let s = "";
+  for (let i = 0; i < 20; i++) s += c[Math.floor(Math.random() * c.length)];
+  return s;
+}
+
+const demo = {
+  async createBooking(b) {
+    const id = idRastesishme();
+    const all = lexo(LS_B);
+    all.push({ ...b, id, status: "pending", createdAt: Date.now() });
+    shkruaj(LS_B, all);
+    return id;
+  },
+  watchBooking(id, cb) {
+    return degjo(() => cb(lexo(LS_B).find((x) => x.id === id) || null));
+  },
+  watchBlocks(cb) {
+    return degjo(() => cb(lexo(LS_K)));
+  },
+  watchBookings(cb) {
+    return degjo(() => cb(lexo(LS_B).sort((a, b) => b.createdAt - a.createdAt)));
+  },
+  async setStatus(b, status) {
+    const all = lexo(LS_B).map((x) => (x.id === b.id ? { ...x, status, updatedAt: Date.now() } : x));
+    shkruaj(LS_B, all);
+    let bl = lexo(LS_K).filter((k) => k.id !== b.id);
+    if (status === "approved") bl.push({ id: b.id, carId: b.carId, from: b.from, to: b.to, burimi: "rezervim" });
+    shkruaj(LS_K, bl);
+  },
+  async addManualBlock(carId, from, to, shenim) {
+    const bl = lexo(LS_K);
+    bl.push({ id: "m_" + idRastesishme(), carId, from, to, shenim: shenim || "", burimi: "manual" });
+    shkruaj(LS_K, bl);
+  },
+  async removeBlock(id) {
+    shkruaj(LS_K, lexo(LS_K).filter((k) => k.id !== id));
+  },
+  onAuth(cb) {
+    let u = null;
+    try { u = sessionStorage.getItem("leli_demo_admin") ? { email: "demo" } : null; } catch {}
+    cb(u);
+    this._authCb = cb;
+    return () => {};
+  },
+  async login(email, pw) {
+    if (pw !== "demo") throw new Error("Në modalitetin demo fjalëkalimi është: demo");
+    try { sessionStorage.setItem("leli_demo_admin", "1"); } catch {}
+    this._authCb && this._authCb({ email: "demo" });
+  },
+  async logout() {
+    try { sessionStorage.removeItem("leli_demo_admin"); } catch {}
+    this._authCb && this._authCb(null);
+  },
+};
+
+// ============================================================
+//  FIREBASE
+// ============================================================
+const V = "10.12.2";
+let fb = null;
+async function ngarkoFirebase() {
+  if (fb) return fb;
+  const app = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+  const fs = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+  const au = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+  const a = app.initializeApp(FIREBASE_CONFIG);
+  fb = { fs, au, db: fs.getFirestore(a), auth: au.getAuth(a) };
+  return fb;
+}
+
+const firebase = {
+  async createBooking(b) {
+    const { fs, db } = await ngarkoFirebase();
+    const ref = await fs.addDoc(fs.collection(db, "bookings"), {
+      ...b,
+      status: "pending",
+      createdAt: fs.serverTimestamp(),
+    });
+    return ref.id;
+  },
+  watchBooking(id, cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      unsub = fs.onSnapshot(
+        fs.doc(db, "bookings", id),
+        (s) => cb(s.exists() ? { id: s.id, ...s.data() } : null),
+        () => cb(null)
+      );
+    });
+    return () => unsub();
+  },
+  watchBlocks(cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      unsub = fs.onSnapshot(fs.collection(db, "blocks"), (q) =>
+        cb(q.docs.map((d) => ({ id: d.id, ...d.data() })))
+      );
+    });
+    return () => unsub();
+  },
+  watchBookings(cb, onErr) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      const q = fs.query(fs.collection(db, "bookings"), fs.orderBy("createdAt", "desc"), fs.limit(300));
+      unsub = fs.onSnapshot(q, (s) =>
+        cb(s.docs.map((d) => {
+          const x = d.data();
+          return { id: d.id, ...x, createdAt: x.createdAt?.toMillis?.() || Date.now() };
+        })),
+        (e) => onErr && onErr(e)
+      );
+    });
+    return () => unsub();
+  },
+  async setStatus(b, status) {
+    const { fs, db } = await ngarkoFirebase();
+    const batch = fs.writeBatch(db);
+    batch.update(fs.doc(db, "bookings", b.id), { status, updatedAt: fs.serverTimestamp() });
+    const blockRef = fs.doc(db, "blocks", b.id);
+    if (status === "approved") batch.set(blockRef, { carId: b.carId, from: b.from, to: b.to, burimi: "rezervim" });
+    else batch.delete(blockRef);
+    await batch.commit();
+  },
+  async addManualBlock(carId, from, to, shenim) {
+    const { fs, db } = await ngarkoFirebase();
+    await fs.addDoc(fs.collection(db, "blocks"), { carId, from, to, shenim: shenim || "", burimi: "manual" });
+  },
+  async removeBlock(id) {
+    const { fs, db } = await ngarkoFirebase();
+    await fs.deleteDoc(fs.doc(db, "blocks", id));
+  },
+  onAuth(cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ au, auth }) => { unsub = au.onAuthStateChanged(auth, cb); });
+    return () => unsub();
+  },
+  async login(email, pw) {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signInWithEmailAndPassword(auth, email, pw);
+  },
+  async logout() {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signOut(auth);
+  },
+};
+
+// ============================================================
+//  LLOGARITË E KLIENTËVE (hyrje me email/fjalëkalim ose Google)
+// ============================================================
+function gabimAuth(x) {
+  const c = (x && x.code) || "";
+  if (c.includes("popup-closed") || c.includes("cancelled-popup")) return "";
+  if (c.includes("invalid-credential") || c.includes("wrong-password") || c.includes("user-not-found")) return "Emaili ose fjalëkalimi është gabim.";
+  if (c.includes("email-already-in-use")) return "Ky email ka tashmë llogari. Kliko \"Hyr\" dhe hyr me të.";
+  if (c.includes("weak-password")) return "Fjalëkalimi duhet të ketë së paku 6 karaktere.";
+  if (c.includes("invalid-email")) return "Emaili nuk është i saktë.";
+  if (c.includes("missing-password")) return "Shkruaj fjalëkalimin.";
+  if (c.includes("too-many-requests")) return "Shumë tentime. Provo përsëri pas pak minutash.";
+  if (c.includes("operation-not-allowed") || c.includes("admin-restricted")) return "Kjo mënyrë hyrjeje nuk është aktivizuar ende. Na telefono në 044 296 791.";
+  if (c.includes("unauthorized-domain")) return "Hyrja me Google nuk lejohet nga ky domen ende.";
+  if (c.includes("network-request-failed")) return "Nuk ka internet. Kontrollo lidhjen dhe provo përsëri.";
+  return (x && x.message) || "Diçka nuk shkoi. Provo përsëri.";
+}
+
+const LS_U = "leli_demo_users";
+const LS_CU = "leli_demo_current";
+const klientDemo = {
+  _cbs: new Set(),
+  _cur() { try { return JSON.parse(localStorage.getItem(LS_CU) || "null"); } catch { return null; } },
+  _set(u) { try { u ? localStorage.setItem(LS_CU, JSON.stringify(u)) : localStorage.removeItem(LS_CU); } catch {} this._cbs.forEach((f) => f(u)); },
+  onUser(cb) { this._cbs.add(cb); setTimeout(() => cb(this._cur()), 0); return () => this._cbs.delete(cb); },
+  async signUp(name, email, pw) {
+    const us = lexo(LS_U);
+    if (!/^\S+@\S+\.\S+$/.test(email)) throw { code: "invalid-email" };
+    if (pw.length < 6) throw { code: "weak-password" };
+    if (us.some((u) => u.email === email)) throw { code: "email-already-in-use" };
+    const u = { uid: "u_" + idRastesishme(), email, displayName: name };
+    us.push({ ...u, pw }); try { localStorage.setItem(LS_U, JSON.stringify(us)); } catch {}
+    this._set(u);
+  },
+  async signIn(email, pw) {
+    const u = lexo(LS_U).find((x) => x.email === email && x.pw === pw);
+    if (!u) throw { code: "invalid-credential" };
+    this._set({ uid: u.uid, email: u.email, displayName: u.displayName });
+  },
+  async google() { this._set({ uid: "u_google_demo", email: "demo@gmail.com", displayName: "Klient Demo" }); },
+  async reset() {},
+  async logout() { this._set(null); },
+  watchMine(uid, cb) { return degjo(() => cb(lexo(LS_B).filter((b) => b.uid === uid).sort((a, b) => b.createdAt - a.createdAt))); },
+  async cancel(b) { shkruaj(LS_B, lexo(LS_B).map((x) => (x.id === b.id ? { ...x, status: "cancelled", updatedAt: Date.now() } : x))); },
+};
+
+const klientFirebase = {
+  onUser(cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ au, auth }) => {
+      au.getRedirectResult(auth).catch(() => {});
+      unsub = au.onAuthStateChanged(auth, (u) => cb(u ? { uid: u.uid, email: u.email, displayName: u.displayName, photoURL: u.photoURL } : null));
+    });
+    return () => unsub();
+  },
+  async signUp(name, email, pw) {
+    const { au, auth } = await ngarkoFirebase();
+    const r = await au.createUserWithEmailAndPassword(auth, email, pw);
+    await au.updateProfile(r.user, { displayName: name });
+    await r.user.reload();
+    klientFirebase._refresh && klientFirebase._refresh();
+  },
+  async signIn(email, pw) {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signInWithEmailAndPassword(auth, email, pw);
+  },
+  async google() {
+    const { au, auth } = await ngarkoFirebase();
+    const p = new au.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
+    try { await au.signInWithPopup(auth, p); }
+    catch (x) {
+      const c = (x && x.code) || "";
+      if (c.includes("popup-blocked") || c.includes("operation-not-supported")) return au.signInWithRedirect(auth, p);
+      throw x;
+    }
+  },
+  async reset(email) {
+    const { au, auth } = await ngarkoFirebase();
+    await au.sendPasswordResetEmail(auth, email);
+  },
+  async logout() {
+    const { au, auth } = await ngarkoFirebase();
+    await au.signOut(auth);
+  },
+  watchMine(uid, cb) {
+    let unsub = () => {};
+    ngarkoFirebase().then(({ fs, db }) => {
+      const q = fs.query(fs.collection(db, "bookings"), fs.where("uid", "==", uid));
+      unsub = fs.onSnapshot(q, (s) => cb(s.docs.map((d) => {
+        const x = d.data();
+        return { id: d.id, ...x, createdAt: x.createdAt?.toMillis?.() || Date.now() };
+      }).sort((a, b) => b.createdAt - a.createdAt)), () => cb([]));
+    });
+    return () => unsub();
+  },
+  async cancel(b) {
+    const { fs, db } = await ngarkoFirebase();
+    await fs.updateDoc(fs.doc(db, "bookings", b.id), { status: "cancelled", updatedAt: fs.serverTimestamp() });
+  },
+};
+
+// ---------- Njoftim në telefon (ntfy) ----------
+function njoftoTelefonin(title, message, tags) {
+  if (DEMO || !NTFY_TOPIC) return;
+  try {
+    fetch("https://ntfy.sh/", {
+      method: "POST",
+      body: JSON.stringify({
+        topic: NTFY_TOPIC,
+        title,
+        message,
+        tags,
+        priority: 5,
+        click: "https://rentacarleli.com/admin.html",
+      }),
+    }).catch(() => {});
+  } catch {}
+}
+
+const api = DEMO ? demo : firebase;
+api.klient = DEMO ? klientDemo : klientFirebase;
+
+</script>
+<script>
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+if (DEMO) $("#demo-bar").hidden = false;
+
+let bookings = [];
+let blocks = [];
+let tab = "pending";
+let unsubs = [];
+
+const STATUS = {
+  pending: ["Në pritje", "warn"],
+  approved: ["Aprovuar", "ok"],
+  rejected: ["Refuzuar", "bad"],
+  cancelled: ["Anuluar", "bad"],
+  completed: ["Përfunduar", "ok"],
+};
+
+function toast(t) {
+  const el = $("#toast");
+  el.textContent = t;
+  el.hidden = false;
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => (el.hidden = true), 2600);
+}
+
+// ---------- Hyrja ----------
+api.onAuth((u) => {
+  unsubs.forEach((f) => f());
+  unsubs = [];
+  if (u && !DEMO && !ADMIN_EMAILS.includes((u.email || "").toLowerCase())) {
+    $("#login").hidden = false; $("#panel").hidden = true; $("#logout").hidden = false;
+    const er = $("#l-err"); er.hidden = false;
+    er.textContent = `Je i kyçur si ${u.email || "klient"}. Kjo llogari nuk ka qasje në panel. Kliko "Dil" dhe hyr me llogarinë e adminit.`;
+    return;
+  }
+  $("#login").hidden = !!u;
+  $("#panel").hidden = !u;
+  $("#logout").hidden = !u;
+  if (u) {
+    unsubs.push(api.watchBookings((b) => { bookings = b || []; njoftoTeReja(); render(); }, (e) => {
+      $("#list").innerHTML = `<div class="err">Paneli nuk mund t'i lexojë rezervimet për llogarinë ${esc(u.email || "")} (${esc(e && e.code || "gabim")}). Kontrollo që rregullat te Firebase → Firestore → Rules të përmbajnë këtë email dhe të jenë publikuar.</div>`;
+    }));
+    unsubs.push(api.watchBlocks((b) => { blocks = b || []; render(); }));
+  }
+});
+$("#login-f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = $("#l-err");
+  err.hidden = true;
+  try { if ("Notification" in window && Notification.permission === "default") Notification.requestPermission(); } catch {}
+  try {
+    await api.login($("#l-email").value.trim(), $("#l-pw").value);
+  } catch (x) {
+    err.hidden = false;
+    err.textContent = DEMO ? x.message : "Emaili ose fjalëkalimi është gabim.";
+  }
+});
+$("#logout").addEventListener("click", () => api.logout());
+$("#l-google").addEventListener("click", async () => {
+  const err = $("#l-err");
+  err.hidden = true;
+  if (DEMO) { err.hidden = false; err.textContent = "Në modalitetin demo përdor fjalëkalimin: demo"; return; }
+  try { await api.klient.google(); }
+  catch (x) { const t = gabimAuth(x); if (t) { err.hidden = false; err.textContent = t; } }
+});
+
+// ---------- Njoftim kur vjen rezervim i ri (kur paneli është i hapur) ----------
+let paraPare = null;
+function njoftoTeReja() {
+  const pending = bookings.filter((b) => b.status === "pending").map((b) => b.id);
+  if (paraPare === null) { paraPare = new Set(pending); return; }
+  const reja = bookings.filter((b) => b.status === "pending" && !paraPare.has(b.id));
+  pending.forEach((id) => paraPare.add(id));
+  if (!reja.length) return;
+  const b = reja[0];
+  toast(`Rezervim i ri: ${b.emri} · ${b.carName}`);
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch {}
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.25].forEach((t) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.2, ctx.currentTime + t); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.2);
+      o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + 0.2);
+    });
+  } catch {}
+  try {
+    if ("Notification" in window && Notification.permission === "granted")
+      new Notification("Rezervim i ri – Rent A Car Leli", { body: `${b.emri} · ${b.carName} · ${formatoData(b.from)} → ${formatoData(b.to)} · ${b.totali}€`, icon: "/admin-icon-192.png" });
+  } catch {}
+}
+
+// ---------- Mesazhet ----------
+function mesazhi(b, lloji) {
+  const tel = `${BIZNESI.telefoni1} / ${BIZNESI.telefoni2}`;
+  const nga = formatoData(b.from), deri = formatoData(b.to);
+  const ndares = "\n\n— — — — —\n\n";
+  if (lloji === "approved") {
+    const en = `Hello ${b.emri}!\n\nYour booking at ${BIZNESI.emri} is APPROVED.\n\nCar: ${b.carName}\nPick-up: ${nga}, at ${b.ora}\nReturn: ${deri}\nTotal: €${b.totali} (${b.dite} ${b.dite === 1 ? "day" : "days"} × €${b.cmimi}), paid at pick-up\n\nThe car is ready for pick-up at Auto Larje Leli. Please bring your ID/passport and driving licence.\n\nQuestions: +383 44 296 791 / +383 49 636 556 (WhatsApp)\nMap: ${BIZNESI.hartaLink}`;
+    const sq = `Përshëndetje ${b.emri}!\n\nRezervimi juaj te ${BIZNESI.emri} është APROVUAR.\n\nMakina: ${b.carName}\nMarrja: ${nga}, ora ${b.ora}\nKthimi: ${deri}\nTotali: ${b.totali}€ (${b.dite} ditë × ${b.cmimi}€), paguhet kur merrni makinën\n\nMakina është gati për ta marrë te Auto Larje Leli. Ju lutem sillni letërnjoftimin/pasaportën dhe patentën e shoferit.\n\nPër pyetje: ${tel}\nHarta: ${BIZNESI.hartaLink}`;
+    return sq + ndares + en;
+  }
+  if (lloji === "rejected") {
+    const sq = `Përshëndetje ${b.emri},\n\nNa vjen keq, ${b.carName} nuk është në dispozicion për datat ${nga} – ${deri}.\n\nNa telefononi në ${BIZNESI.telefoni1} për data të tjera ose një makinë tjetër.\n\n${BIZNESI.emri}`;
+    const en = `Hello ${b.emri},\n\nWe're sorry, the ${b.carName} is not available for ${nga} – ${deri}.\n\nPlease call us on +383 44 296 791 (WhatsApp) for other dates or another car.\n\n${BIZNESI.emri}`;
+    return sq + ndares + en;
+  }
+  return `Përshëndetje ${b.emri}, ju shkruan ${BIZNESI.emri} për rezervimin e ${b.carName} (${nga} – ${deri}).\n\nHello ${b.emri}, this is ${BIZNESI.emri} about your booking of the ${b.carName} (${nga} – ${deri}).`;
+}
+
+const msgDlg = $("#msg-dlg");
+let msgAktual = "";
+function hapMesazhin(b, lloji) {
+  msgAktual = mesazhi(b, lloji);
+  const nr = telNderkombetar(b.tel);
+  $("#msg-title").textContent = lloji === "approved" ? "Njofto klientin: aprovuar" : lloji === "rejected" ? "Njofto klientin: refuzuar" : "Shkruaji klientit";
+  $("#msg-sub").textContent = `${b.emri} · ${b.tel}`;
+  $("#msg-txt").textContent = msgAktual;
+  $("#msg-wa").href = `https://wa.me/${nr}?text=${encodeURIComponent(msgAktual)}`;
+  $("#msg-sms").href = `sms:+${nr}?&body=${encodeURIComponent(msgAktual)}`;
+  $("#msg-viber").href = `viber://chat?number=%2B${nr}`;
+  msgDlg.showModal();
+}
+$("#msg-x").addEventListener("click", () => msgDlg.close());
+$("#msg-copy").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(msgAktual); toast("Mesazhi u kopjua"); }
+  catch {
+    const r = document.createRange(); r.selectNodeContents($("#msg-txt"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    toast("Mesazhi u zgjodh, shtyp Ctrl+C / Kopjo");
+  }
+});
+
+// ---------- Veprimet ----------
+function konfliktet(b) {
+  return blocks.filter((k) => k.id !== b.id && k.carId === b.carId && mbivendosen(b.from, b.to, k.from, k.to));
+}
+
+document.addEventListener("click", async (e) => {
+  const t = e.target.closest("[data-tab]");
+  if (t) { tab = t.dataset.tab; render(); return; }
+
+  const a = e.target.closest("[data-act]");
+  if (!a) return;
+  const b = bookings.find((x) => x.id === a.dataset.id);
+  const act = a.dataset.act;
+
+  if (act === "rmblock") {
+    if (!window.confirm("Ta heq këtë bllokim nga kalendari?")) return;
+    await api.removeBlock(a.dataset.id);
+    toast("Bllokimi u hoq");
+    return;
+  }
+  if (!b) return;
+  try {
+    if (act === "approve") {
+      if (konfliktet(b).length && !window.confirm("Kjo makinë është tashmë e zënë për disa nga këto ditë. Ta aprovosh gjithsesi?")) return;
+      a.disabled = true;
+      await api.setStatus(b, "approved");
+      toast("U aprovua. Makina shfaqet e zënë për këto data.");
+      hapMesazhin(b, "approved");
+    } else if (act === "reject") {
+      if (!window.confirm(`Ta refuzosh rezervimin e ${b.emri}?`)) return;
+      await api.setStatus(b, "rejected");
+      toast("U refuzua");
+      hapMesazhin(b, "rejected");
+    } else if (act === "complete") {
+      await api.setStatus(b, "completed");
+      toast("U shënua si e kthyer. Makina u lirua.");
+    } else if (act === "cancel") {
+      if (!window.confirm("Ta anulosh këtë rezervim? Makina do të lirohet për këto data.")) return;
+      await api.setStatus(b, "cancelled");
+      toast("U anulua");
+    } else if (act === "msg") {
+      hapMesazhin(b, b.status === "approved" ? "approved" : b.status === "rejected" ? "rejected" : "other");
+    }
+  } catch (x) {
+    toast("Veprimi dështoi. Kontrollo internetin dhe provo prapë.");
+    a.disabled = false;
+  }
+});
+
+$("#manual").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const car = $("#m-car").value, nga = $("#m-nga").value, deri = $("#m-deri").value;
+  if (!nga || !deri || deri < nga) { toast("Kontrollo datat"); return; }
+  await api.addManualBlock(car, nga, deri, $("#m-shenim").value.trim());
+  $("#manual").reset();
+  toast("Makina u shënua e zënë");
+});
+$("#m-car").innerHTML = MAKINAT.map((m) => `<option value="${m.id}">${esc(m.emri)} ${m.viti}</option>`).join("");
+
+// ---------- Paraqitja ----------
+function kohaPara(ms) {
+  const d = Math.round((Date.now() - ms) / 60000);
+  if (d < 1) return "tani";
+  if (d < 60) return `para ${d} min`;
+  if (d < 1440) return `para ${Math.round(d / 60)} orësh`;
+  return new Date(ms).toLocaleDateString("sq-AL");
+}
+
+function kartela(b) {
+  const [lbl, cls] = STATUS[b.status] || STATUS.pending;
+  const k = b.status === "pending" ? konfliktet(b) : [];
+  const nr = telNderkombetar(b.tel);
+  let acts = "";
+  if (b.status === "pending")
+    acts = `<button class="btn btn-ok" data-act="approve" data-id="${b.id}">Aprovo</button>
+            <button class="btn btn-bad btn-sm" data-act="reject" data-id="${b.id}">Refuzo</button>`;
+  else if (b.status === "approved")
+    acts = `<button class="btn btn-dark btn-sm" data-act="msg" data-id="${b.id}">Mesazh</button>
+            <button class="btn btn-line btn-sm" data-act="complete" data-id="${b.id}">U kthye</button>
+            <button class="btn btn-bad btn-sm" data-act="cancel" data-id="${b.id}">Anulo</button>`;
+  else acts = `<button class="btn btn-line btn-sm" data-act="msg" data-id="${b.id}">Mesazh</button>`;
+  return `
+  <article class="bk ${esc(b.status)}">
+    <div>
+      <h3>${esc(b.carName)} <span class="pill ${cls}">${lbl}</span></h3>
+      <div class="meta">
+        <span>Klienti <b>${esc(b.emri)}</b></span>
+        <span>Tel <b><a href="tel:+${nr}">${esc(b.tel)}</a></b></span>
+        ${b.email ? `<span>Email <b>${esc(b.email)}</b></span>` : ""}
+        <span>Marrja <b class="num">${formatoData(b.from)} · ${esc(b.ora)}</b></span>
+        <span>Kthimi <b class="num">${formatoData(b.to)}</b></span>
+        <span>Dërguar <b>${kohaPara(b.createdAt)}</b></span>
+      </div>
+      ${b.shenim ? `<p class="note-txt">${esc(b.shenim)}</p>` : ""}
+      ${k.length ? `<p class="err" style="margin:8px 0 0">Kujdes: makina është e zënë ${k.map((x) => `${formatoData(x.from)} – ${formatoData(x.to)}`).join(", ")}.</p>` : ""}
+    </div>
+    <div style="display:grid;gap:10px;align-content:start">
+      <div class="tot num">${b.totali}€<small style="display:block;font:500 13px var(--body);color:var(--muted)">${b.dite} ditë × ${b.cmimi}€</small></div>
+      <div class="acts">${acts}</div>
+    </div>
+  </article>`;
+}
+
+function render() {
+  const s = sot();
+  const pending = bookings.filter((b) => b.status === "pending");
+  const approved = bookings.filter((b) => b.status === "approved" && b.to >= s);
+  const zene = new Set(blocks.filter((k) => mbivendosen(s, s, k.from, k.to)).map((k) => k.carId));
+
+  $("#s-pending b").textContent = pending.length;
+  $("#s-pending").classList.toggle("hot", pending.length > 0);
+  $("#s-active b").textContent = approved.length;
+  $("#s-free b").textContent = `${MAKINAT.length - zene.size}/${MAKINAT.length}`;
+  $("#c-pending").textContent = pending.length;
+  $("#c-pending").classList.toggle("hot", pending.length > 0);
+  $("#c-approved").textContent = approved.length;
+  $("#c-all").textContent = bookings.length;
+  document.title = (pending.length ? `(${pending.length}) ` : "") + "Paneli · Rent A Car Leli";
+
+  document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === tab)));
+  const lista = tab === "pending" ? pending : tab === "approved" ? approved : bookings;
+  $("#list").innerHTML = lista.length
+    ? lista.map(kartela).join("")
+    : `<div class="empty">${tab === "pending" ? "Nuk ka rezervime të reja në pritje." : "Nuk ka asgjë këtu ende."}</div>`;
+
+  $("#cal").innerHTML = MAKINAT.map((m) => {
+    const bl = blocks.filter((k) => k.carId === m.id && k.to >= s).sort((a, b) => a.from.localeCompare(b.from));
+    const liree = !zene.has(m.id);
+    return `<div class="box">
+      <h3>${esc(m.emri)} <span class="pill ${liree ? "ok" : "bad"}">${liree ? "E lirë sot" : "E zënë sot"}</span></h3>
+      ${bl.length ? bl.map((k) => {
+        const bk = bookings.find((x) => x.id === k.id);
+        const kush = bk ? esc(bk.emri) : esc(k.shenim || "Shënim manual");
+        return `<div class="blk"><div><b class="num">${formatoData(k.from)} – ${formatoData(k.to)}</b><small>${kush}</small></div>
+          ${k.burimi === "manual" ? `<button class="lnk" data-act="rmblock" data-id="${k.id}">Hiq</button>` : ""}</div>`;
+      }).join("") : `<p class="note">Asnjë ditë e zënë.</p>`}
+    </div>`;
+  }).join("");
+}
+
+</script>
+</body>
+</html>
