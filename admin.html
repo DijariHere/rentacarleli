@@ -291,6 +291,24 @@ label.f { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
 .lang-btn:hover { border-color: var(--yellow); color: var(--yellow); }
 @media (max-width: 480px) { .nav-rez { display: none; } }
 
+/* ---------- Review-t në Google ---------- */
+.rev-sec { padding-block: 44px; background: var(--card); border-block: 1px solid var(--line); }
+.rev-in { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px 28px; }
+.rev-stars { font-size: 34px; letter-spacing: 4px; color: var(--yellow); text-shadow: 0 1px 0 #c79400; line-height: 1; }
+.rev-txt h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; text-transform: uppercase; }
+.rev-txt p { margin: 6px 0 0; color: var(--muted); max-width: 40em; }
+.rev-btn { white-space: nowrap; }
+@media (max-width: 760px) { .rev-in { grid-template-columns: 1fr; } .rev-btn { justify-self: start; } }
+
+/* ---------- Dritarja e review-t ---------- */
+.rev-dlg { width: min(420px, calc(100vw - 32px)); position: fixed; }
+.rev-x { position: absolute; top: 8px; right: 10px; background: none; border: 0; font-size: 28px; line-height: 1; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+.rev-body { padding: 30px 24px 22px; display: grid; gap: 12px; justify-items: center; text-align: center; }
+.rev-big { font-size: 38px; letter-spacing: 4px; color: var(--yellow); text-shadow: 0 1px 0 #c79400; line-height: 1; }
+.rev-body h3 { font-size: 30px; text-transform: uppercase; }
+.rev-body p { margin: 0; color: #3c434c; }
+.rev-no { background: none; border: 0; color: var(--muted); font: 600 14px var(--body); cursor: pointer; text-decoration: underline; padding: 6px; }
+
 </style>
 <style>
   .login { max-width: 400px; margin: 64px auto; }
@@ -415,6 +433,8 @@ const BIZNESI = {
   emri: "Rent A Car Leli",
   lokacioni: "Te Autolarje Leli",
   hartaLink: "https://share.google/XmGibrxjUK9DVoWyP",
+  // Linku ku klienti lë review në Google (Google Business → "Ask for reviews" → kopjo linkun)
+  reviewLink: "https://www.google.com/maps/search/?api=1&query=Rent%20A%20Car%20Leli%20Auto%20Larje%20Leli%20Prishtin%C3%AB",
   telefoni1: "044 296 791",
   telefoni2: "049 636 556",
 };
@@ -442,6 +462,9 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "392721031632",
   appId: "1:392721031632:web:19eddda6a84582aaa159d5",
 };
+
+// Njoftimet në telefon me aplikacionin falas "ntfy" (abonohu te ky emër)
+const NTFY_TOPIC = "leli-rez-g72l2f2libnge1";
 
 const DEMO = FIREBASE_CONFIG.apiKey.startsWith("VENDOS");
 
@@ -897,6 +920,24 @@ const klientFirebase = {
     await fs.updateDoc(fs.doc(db, "bookings", b.id), { status: "cancelled", updatedAt: fs.serverTimestamp() });
   },
 };
+
+// ---------- Njoftim në telefon (ntfy) ----------
+function njoftoTelefonin(title, message, tags) {
+  if (DEMO || !NTFY_TOPIC) return;
+  try {
+    fetch("https://ntfy.sh/", {
+      method: "POST",
+      body: JSON.stringify({
+        topic: NTFY_TOPIC,
+        title,
+        message,
+        tags,
+        priority: 5,
+        click: "https://rentacarleli.com/admin.html",
+      }),
+    }).catch(() => {});
+  } catch {}
+}
 
 const api = DEMO ? demo : firebase;
 api.klient = DEMO ? klientDemo : klientFirebase;

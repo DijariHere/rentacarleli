@@ -492,6 +492,9 @@ const FIREBASE_CONFIG = {
   appId: "1:392721031632:web:19eddda6a84582aaa159d5",
 };
 
+// Njoftimet në telefon me aplikacionin falas "ntfy" (abonohu te ky emër)
+const NTFY_TOPIC = "leli-rez-g72l2f2libnge1";
+
 const DEMO = FIREBASE_CONFIG.apiKey.startsWith("VENDOS");
 
 </script>
@@ -1202,6 +1205,24 @@ const klientFirebase = {
   },
 };
 
+// ---------- Njoftim në telefon (ntfy) ----------
+function njoftoTelefonin(title, message, tags) {
+  if (DEMO || !NTFY_TOPIC) return;
+  try {
+    fetch("https://ntfy.sh/", {
+      method: "POST",
+      body: JSON.stringify({
+        topic: NTFY_TOPIC,
+        title,
+        message,
+        tags,
+        priority: 5,
+        click: "https://rentacarleli.com/admin.html",
+      }),
+    }).catch(() => {});
+  } catch {}
+}
+
 const api = DEMO ? demo : firebase;
 api.klient = DEMO ? klientDemo : klientFirebase;
 
@@ -1550,6 +1571,11 @@ $("#form").addEventListener("submit", async (e) => {
       cmimi: cmimiDitor(d),
       totali: totali(d),
     });
+    njoftoTelefonin(
+      "Rezervim i ri – Rent A Car Leli",
+      `${aktive.emri} ${aktive.viti} · ${formatoData(fNga.value)} → ${formatoData(fDeri.value)} · ${d} ditë · ${totali(d)}€\nHap panelin për ta aprovuar.`,
+      ["red_car", "bell"]
+    );
     try { localStorage.setItem("leli_tel", tel); } catch {}
     const link = "rezervimi.html";
     $("#form").hidden = true;
