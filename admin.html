@@ -1059,11 +1059,20 @@ function njoftoTeReja() {
 
 // ---------- Mesazhet ----------
 function mesazhi(b, lloji) {
-  if (lloji === "approved")
-    return `Përshëndetje ${b.emri}!\n\nRezervimi juaj te ${BIZNESI.emri} është APROVUAR.\n\nMakina: ${b.carName}\nMarrja: ${formatoData(b.from)}, ora ${b.ora}\nKthimi: ${formatoData(b.to)}\nTotali: ${b.totali}€ (${b.dite} ditë × ${b.cmimi}€)\n\nMakina është gati për ta marrë te Autolarje Leli. Ju lutem sillni letërnjoftimin dhe patentën e shoferit.\n\nPër pyetje: ${BIZNESI.telefoni1} / ${BIZNESI.telefoni2}\nHarta: ${BIZNESI.hartaLink}`;
-  if (lloji === "rejected")
-    return `Përshëndetje ${b.emri},\n\nNa vjen keq, ${b.carName} nuk është në dispozicion për datat ${formatoData(b.from)} – ${formatoData(b.to)}.\n\nNa telefononi në ${BIZNESI.telefoni1} për data të tjera ose një makinë tjetër.\n\n${BIZNESI.emri}`;
-  return `Përshëndetje ${b.emri}, ju shkruan ${BIZNESI.emri} për rezervimin e ${b.carName} (${formatoData(b.from)} – ${formatoData(b.to)}).`;
+  const tel = `${BIZNESI.telefoni1} / ${BIZNESI.telefoni2}`;
+  const nga = formatoData(b.from), deri = formatoData(b.to);
+  const ndares = "\n\n— — — — —\n\n";
+  if (lloji === "approved") {
+    const en = `Hello ${b.emri}!\n\nYour booking at ${BIZNESI.emri} is APPROVED.\n\nCar: ${b.carName}\nPick-up: ${nga}, at ${b.ora}\nReturn: ${deri}\nTotal: €${b.totali} (${b.dite} ${b.dite === 1 ? "day" : "days"} × €${b.cmimi}), paid at pick-up\n\nThe car is ready for pick-up at Auto Larje Leli. Please bring your ID/passport and driving licence.\n\nQuestions: +383 44 296 791 / +383 49 636 556 (WhatsApp)\nMap: ${BIZNESI.hartaLink}`;
+    const sq = `Përshëndetje ${b.emri}!\n\nRezervimi juaj te ${BIZNESI.emri} është APROVUAR.\n\nMakina: ${b.carName}\nMarrja: ${nga}, ora ${b.ora}\nKthimi: ${deri}\nTotali: ${b.totali}€ (${b.dite} ditë × ${b.cmimi}€), paguhet kur merrni makinën\n\nMakina është gati për ta marrë te Auto Larje Leli. Ju lutem sillni letërnjoftimin/pasaportën dhe patentën e shoferit.\n\nPër pyetje: ${tel}\nHarta: ${BIZNESI.hartaLink}`;
+    return sq + ndares + en;
+  }
+  if (lloji === "rejected") {
+    const sq = `Përshëndetje ${b.emri},\n\nNa vjen keq, ${b.carName} nuk është në dispozicion për datat ${nga} – ${deri}.\n\nNa telefononi në ${BIZNESI.telefoni1} për data të tjera ose një makinë tjetër.\n\n${BIZNESI.emri}`;
+    const en = `Hello ${b.emri},\n\nWe're sorry, the ${b.carName} is not available for ${nga} – ${deri}.\n\nPlease call us on +383 44 296 791 (WhatsApp) for other dates or another car.\n\n${BIZNESI.emri}`;
+    return sq + ndares + en;
+  }
+  return `Përshëndetje ${b.emri}, ju shkruan ${BIZNESI.emri} për rezervimin e ${b.carName} (${nga} – ${deri}).\n\nHello ${b.emri}, this is ${BIZNESI.emri} about your booking of the ${b.carName} (${nga} – ${deri}).`;
 }
 
 const msgDlg = $("#msg-dlg");
